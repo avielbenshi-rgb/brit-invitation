@@ -3,7 +3,7 @@
  * This config is intended for the browser; security comes from firestore.rules, not secrecy.
  * Do not paste a service account private key here.
  */
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyBiTDULHOYW7HMmAn4thND2u14RoQn-mAs",
   authDomain: "brit-6e2a5.firebaseapp.com",
   databaseURL: "https://brit-6e2a5-default-rtdb.firebaseio.com",
