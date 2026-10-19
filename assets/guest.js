@@ -112,7 +112,7 @@ form.addEventListener("submit", async (event) => {
   } finally {
     submitting = false;
     submitButton.disabled = false;
-    submitButton.querySelector(".button-text").textContent = "מאשרים הגעה באהבה";
+    submitButton.querySelector(".button-text").textContent = "אישור הגעה";
   }
 });
 
