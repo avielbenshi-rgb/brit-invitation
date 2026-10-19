@@ -57,7 +57,7 @@ service cloud.firestore {
       // Visitors may submit *new* RSVPs, with strictly validated fields.
       allow create: if validRsvp();
       // Only active administrators can read, edit a count, or delete submissions.
-      allow read: if isAdmin();
+      allow get, list: if isAdmin();
       allow update: if isAdmin()
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['guests'])
         && request.resource.data.guests is int
@@ -66,6 +66,9 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // Everything else is denied by default.
+    // Explicit deny for any new/forgotten collection. Do not weaken this.
+    match /{document=**} {
+      allow read, write: if false;
+    }
   }
 }

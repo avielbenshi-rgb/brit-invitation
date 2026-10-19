@@ -1,4 +1,8 @@
-/** Firebase Web App config — public client values; security is in Firestore rules. */
+/**
+ * Firebase Web configuration (public browser identifiers, NOT a secret).
+ * Security depends on deployed Firestore rules + App Check enforcement.
+ * Do not add service-account keys, passwords, or Google Cloud secrets here.
+ */
 export const firebaseConfig = {
   apiKey: "AIzaSyBiTDULHOYW7HMmAn4thND2u14RoQn-mAs",
   authDomain: "brit-6e2a5.firebaseapp.com",
@@ -9,6 +13,9 @@ export const firebaseConfig = {
   appId: "1:238803584085:web:5b6892644ffd9714afc0dc",
   measurementId: "G-ZZJGGSRB41"
 };
+// Public reCAPTCHA Enterprise SITE key, after App Check registration.
+// Keep empty until the Firebase Console is configured. Never paste a SECRET key.
+// When filled, test from GitHub Pages BEFORE enabling Cloud Firestore enforcement.
 export const appCheckSiteKey = "";
 export const isConfigured = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId && firebaseConfig.appId)
   && !Object.values(firebaseConfig).some(value => String(value).includes("PASTE_"));

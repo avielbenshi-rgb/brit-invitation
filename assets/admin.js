@@ -32,6 +32,9 @@ function stopListening() {
   unsubscribeResponses = null;
   unsubscribeSettings = null;
   currentResponses = [];
+  // Clear private records on sign-out or failed authorization.
+  updateOverview();
+  renderResponses();
 }
 function localDate(timestamp) {
   if (!timestamp || typeof timestamp.toDate !== "function") return "—";

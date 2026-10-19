@@ -1,0 +1,37 @@
+אתר הברית — גרסת אבטחה מעודכנת
+================================
+
+1) לפרסם את קובצי האתר החדשים ב-GitHub:
+   https://github.com/avielbenshi-rgb/brit-invitation
+   יש להעלות את התוכן הנמצא *בתוך* תיקיית brit-rsvp לשורש ה-Repository,
+   כך ש-index.html ו-admin.html יהיו בשורש, והתיקייה assets תישמר.
+   אין למחוק את תוכן Firestore או להחליף את נתוני האורחים — העלאת האתר לא פוגעת במסד הנתונים.
+
+2) חובה: Firebase Console > Firestore Database > Rules
+   להדביק את תוכן firestore.rules וללחוץ Publish.
+
+3) אם לא משתמשים ב-Realtime Database:
+   Firebase Console > Realtime Database > Rules
+   להדביק את database.rules.json וללחוץ Publish.
+
+4) אם קיים Firebase Storage והוא לא משמש שירות אחר:
+   Firebase Console > Storage > Rules
+   להדביק storage.rules וללחוץ Publish.
+
+5) Google Cloud > APIs & Services > Credentials:
+   לבדוק שמפתח Web מוגבל ל-APIs של Firebase בלבד.
+   לא למחוק את ה-apiKey — הוא מזהה ציבורי שנדרש בדפדפן.
+
+6) App Check:
+   להגדיר reCAPTCHA Enterprise, לעדכן appCheckSiteKey ב-assets/firebase-config.js,
+   לפרסם מחדש, לבדוק אתר אורחים ומנהל, ורק אחר כך להפעיל Enforce עבור Firestore.
+   App Check לא מופעל רק מהעלאת קובצי ה-ZIP — דרושה הגדרה במסוף Firebase.
+
+7) בדיקת קצה:
+   לשלוח אישור ניסיון, לוודא שנוצר מסמך ב-rsvps ב-Firestore,
+   להתחבר למנהל ולראות את האישור; למחוק את אישור הניסיון.
+
+לעוד פרטים חשוב לקרוא SECURITY-SETUP-HE.md.
+
+המערכת לא נבדקה מול חשבון Firebase החי שלך. בדיקות מקומיות אינן מחליפות
+את כללי האבטחה שפורסמו בפועל.

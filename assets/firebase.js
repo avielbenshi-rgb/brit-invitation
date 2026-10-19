@@ -32,7 +32,13 @@ export function humanizeFirebaseError(error) {
     "unavailable": "לא ניתן להתחבר כרגע. בדקו את החיבור ונסו שוב.",
     "firestore/unavailable": "לא ניתן להתחבר כרגע. בדקו את החיבור ונסו שוב.",
     "failed-precondition": "מסד הנתונים עדיין לא הוגדר כראוי.",
-    "auth/network-request-failed": "שגיאת רשת. בדקו את חיבור האינטרנט."
+    "auth/network-request-failed": "שגיאת רשת. בדקו את חיבור האינטרנט.",
+    "auth/unauthorized-domain": "הדומיין של אתר GitHub Pages אינו מאושר ב־Authentication → Settings → Authorized domains.",
+    "auth/operation-not-allowed": "שיטת ההתחברות לא הופעלה ב־Firebase Authentication.",
+    "auth/invalid-api-key": "מפתח Firebase אינו תקין. בדקו את ההגדרות ב־Firebase Console.",
+    "appCheck/fetch-status-error": "אימות הגנת App Check נכשל. בדקו דומיין ומפתח reCAPTCHA Enterprise.",
+    "appCheck/throttled": "בוצעו יותר מדי ניסיונות אימות. נסו שוב מאוחר יותר.",
+    "resource-exhausted": "השירות הגיע למכסה המוגדרת. נסו שוב מאוחר יותר."
   };
   return messages[error?.code] || "אירעה שגיאה. נסו שוב ובדקו את הגדרות Firebase.";
 }

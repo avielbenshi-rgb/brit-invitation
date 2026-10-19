@@ -40,7 +40,7 @@ class ProjectTests(unittest.TestCase):
     def test_required_security_guards(self):
         rules = (ROOT / "firestore.rules").read_text(encoding="utf-8")
         self.assertIn("allow create: if validRsvp();", rules)
-        self.assertIn("allow read: if isAdmin();", rules)
+        self.assertIn("allow get, list: if isAdmin();", rules)
         self.assertIn("allow list, create, update, delete: if false;", rules)
         self.assertNotIn("allow read, write: if true", rules)
 
