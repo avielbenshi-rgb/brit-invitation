@@ -7,6 +7,20 @@ const errorBox = byId("formError");
 const submitButton = byId("submitRsvp");
 const numberInput = byId("guests");
 let submitting = false;
+let dialogOpener = null;
+function closeThanks() {
+  byId("thanksOverlay").hidden = true;
+  document.body.classList.remove("thanks-open");
+  dialogOpener?.focus();
+}
+byId("thanksCloseButton").addEventListener("click", closeThanks);
+byId("thanksOverlay").addEventListener("click", event => {
+  if (event.target === byId("thanksOverlay")) closeThanks();
+});
+byId("thanksOverlay").addEventListener("keydown", event => {
+  if (event.key === "Escape") { closeThanks(); return; }
+  if (event.key === "Tab") { event.preventDefault(); byId("thanksCloseButton").focus(); }
+});
 
 function safeTrim(value) {
   return value.trim().replace(/\s+/g, " ");
@@ -86,6 +100,12 @@ form.addEventListener("submit", async (event) => {
     form.hidden = true;
     byId("previousNotice").hidden = true;
     byId("successPanel").hidden = false;
+    // Only open after Firestore acknowledges the write. Never imply success on errors.
+    dialogOpener = submitButton;
+    byId("thanksSummary").textContent = `${firstName} ${lastName} · ${guests} ${guests === 1 ? "מגיע" : "מגיעים"}`;
+    byId("thanksOverlay").hidden = false;
+    document.body.classList.add("thanks-open");
+    byId("thanksCloseButton").focus();
   } catch (error) {
     console.error("RSVP submission failed:", error);
     displayError(humanizeFirebaseError(error));

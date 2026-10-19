@@ -1,6 +1,6 @@
 import { auth, db, isConfigured, humanizeFirebaseError } from "./firebase.js";
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
-import { collection, deleteDoc, doc, getDoc, onSnapshot, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+import { collection, deleteDoc, doc, getDoc, getDocsFromServer, onSnapshot, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
 const byId = (id) => document.getElementById(id);
 let currentResponses = [];
@@ -124,14 +124,38 @@ function renderResponses() {
   }
   body.append(fragment);
 }
+function setSyncStatus(message) { byId("syncStatus").textContent = message; }
+async function refreshResponses() {
+  const button = byId("refreshResponses");
+  button.disabled = true;
+  setSyncStatus("בודקים אישורים ישירות מול Firestore...");
+  try {
+    const snapshot = await getDocsFromServer(collection(db, "rsvps"));
+    currentResponses = getSortedResponses(snapshot);
+    updateOverview();
+    renderResponses();
+    setMessage("dashboardError", "");
+    setSyncStatus(`סונכרן עם Firestore · ${currentResponses.length} אישורים נמצאו`);
+  } catch (error) {
+    setSyncStatus("לא ניתן לקרוא אישורים מהשרת.");
+    setMessage("dashboardError", `רענון נכשל: ${humanizeFirebaseError(error)} (${error?.code || "שגיאה לא ידועה"})`);
+    console.error("Firestore server refresh failed", error);
+  } finally { button.disabled = false; }
+}
+byId("refreshResponses").addEventListener("click", refreshResponses);
 function listenForResponses() {
   unsubscribeResponses = onSnapshot(collection(db, "rsvps"), snapshot => {
     currentResponses = getSortedResponses(snapshot);
     setMessage("dashboardError", "");
     updateOverview();
     renderResponses();
+    setSyncStatus(snapshot.metadata.fromCache
+      ? "מוצגים נתונים מהמטמון בלבד — ממתינים לחיבור לשרת. לחצו על רענון הרשימה."
+      : `מחובר ל־Firestore · ${currentResponses.length} אישורים`);
   }, error => {
-    setMessage("dashboardError", `לא ניתן לטעון את האישורים: ${humanizeFirebaseError(error)}`);
+    setSyncStatus("שגיאה בקריאת הרשימה מ־Firestore");
+    setMessage("dashboardError", `לא ניתן לטעון את האישורים: ${humanizeFirebaseError(error)} (${error?.code || "שגיאה לא ידועה"})`);
+    console.error("Firestore live RSVP listener failed", error);
   });
 }
 function listenForSettings() {

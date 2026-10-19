@@ -8,3 +8,20 @@
 @media(max-width:800px){.guest-layout{grid-template-columns:1fr;gap:25px;padding-top:14px}.invitation{max-width:550px}.illustration{width:290px;height:290px;margin:8px auto}.event-details{max-width:550px;margin:20px auto 0}.form-column{max-width:560px}.guest-header{height:46px}.guest-shell{padding-inline:20px}.guest-footer{margin-top:12px}.dashboard{display:block}.sidebar{height:auto;width:100%;position:relative;display:flex;flex-direction:row;flex-wrap:wrap;align-items:center;padding:15px 22px;gap:12px}.sidebar-brand{margin:0 auto 0 0}.sidebar-nav{display:flex;gap:1px;order:2;width:100%;overflow-x:auto}.sidebar-nav a{padding:9px 11px;white-space:nowrap}.sidebar-bottom{border:0;padding:0;margin:0}.sidebar-bottom a{display:none}.admin-main{padding:26px 20px}.admin-topbar{margin-bottom:25px}}
 @media(max-width:580px){.guest-shell{padding-inline:15px}.header-ornament{font-size:11px;letter-spacing:6px}.invitation h1{font-size:37px}.invitation-subtitle{font-size:16px}.illustration{width:260px;height:260px}.illustration-script{font-size:37px}.illustration-tiny{font-size:9px}.event-details{gap:8px}.detail-item{padding:10px 9px;gap:7px}.detail-icon{min-width:36px;height:36px}.detail-icon svg{width:18px;height:18px}.detail-item strong{font-size:13px}.detail-caption{font-size:11px}.rsvp-card{padding:28px 21px;border-radius:22px}.form-grid{grid-template-columns:1fr;gap:0}.form-description{margin-bottom:20px}.form-column{padding-bottom:10px}.sidebar-brand{font-size:17px}.sidebar-brand .brand-mark{width:36px;height:36px}.admin-topbar{align-items:flex-start;flex-direction:column}.admin-topbar h1{font-size:27px}.topbar-actions{width:100%}.section-heading{align-items:flex-start}.section-heading h2{font-size:20px}.metrics{grid-template-columns:1fr;gap:10px}.metric-card{min-height:135px;padding:14px 19px}.metric-card strong{font-size:32px}.metric-card .metric-date{font-size:24px;margin:8px 0}.metric-card p{margin:6px 0 0}.metric-card small{font-size:11px}.panel{padding:20px 14px}.panel-top{align-items:flex-start;flex-direction:column}.panel-top h2{font-size:20px}.toolbar{align-items:stretch;flex-direction:column}.auth-card{padding:30px 24px}.form-actions .primary-button{width:100%}.live-label{font-size:11px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* RSVP celebration popup */
+.thanks-open{overflow:hidden}
+.thanks-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:18px;background:rgba(22,41,31,.62);backdrop-filter:blur(6px);animation:thanks-fade .23s ease-out}
+.thanks-dialog{width:min(100%,490px);background:linear-gradient(155deg,#fffefa,#f1f4e9);border:1px solid #e6e9da;border-radius:30px;padding:36px 28px 32px;text-align:center;box-shadow:0 32px 90px rgba(0,0,0,.24);animation:thanks-rise .35s ease-out;color:var(--forest-dark)}
+.thanks-sparkles{color:var(--gold);font-size:22px;letter-spacing:8px}
+.thanks-emblem{margin:16px auto 18px;width:84px;height:84px;display:grid;place-items:center;border-radius:50%;background:#e3eddf;color:var(--forest);border:2px solid #a4bfa6;font-size:47px;box-shadow:0 0 0 9px #f1f4e9}
+.thanks-dialog h2{font-family:'Heebo','Assistant',sans-serif;font-size:clamp(25px,5vw,33px);font-weight:600;line-height:1.4;margin:8px auto 16px}
+.thanks-dialog p{line-height:1.9}.thanks-dialog #thanksDescription{color:#607265;font-size:17px}
+.thanks-summary{padding:9px 14px;border-radius:12px;background:#e9f0e5;font-weight:700;color:var(--forest)}
+.thanks-salutation{font-size:20px;color:var(--forest);font-weight:700;margin:17px 0 23px}
+.thanks-dialog .primary-button{width:100%;max-width:320px;justify-content:center}
+#refreshResponses{white-space:nowrap;font-size:13px;padding:9px 14px}
+#syncStatus{margin:10px 0 15px}
+@keyframes thanks-fade{from{opacity:0}to{opacity:1}}
+@keyframes thanks-rise{from{transform:translateY(24px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.thanks-overlay,.thanks-dialog{animation:none}}

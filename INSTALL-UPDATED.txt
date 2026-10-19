@@ -1,0 +1,12 @@
+תיקון מערכת אישורי הגעה — הוראות העלאה ל־GitHub
+
+1. העלו את תוכן התיקייה brit-rsvp לשורש ה־Repository, ושמרו על מבנה assets.
+2. מומלץ להחליף את הקבצים index.html, admin.html, assets/guest.js, assets/admin.js, assets/styles.css, assets/firebase-config.js. שאר הקבצים זהים למקור.
+3. המתינו לפרסום GitHub Pages ורעננו באמצעות Ctrl+Shift+R.
+4. בדיקה: Firebase Console > Firestore Database > Data > rsvps. אחרי אישור מוצלח חייב להופיע מסמך חדש.
+5. במסך המנהל, ליד הרשימה לחצו ↻ רענון הרשימה. ההודעה למעלה תציין אם יש נתוני שרת או שגיאת הרשאות.
+6. אם יש רשומות ב־rsvps אבל המנהל אינו רואה אותן, בדקו ב־Firestore Rules שהכללים פורסמו וב־admins/{UID} שהשדה active הוא boolean true.
+7. ודאו ששני הדפים משתמשים באותו Firebase projectId: brit-6e2a5.
+8. חלון התודה יוצג רק לאחר שמירת אישור ההגעה ב־Firestore.
+
+הערה: אין באפשרותנו לבדוק נתונים פרטיים ב־Firestore מחשבון GitHub. בדיקת שמירה אמיתית נעשית בממשק Firebase שלכם.
