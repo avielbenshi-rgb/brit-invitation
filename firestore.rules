@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Grant administration only to users marked active=true in the
+    // Firebase Console's /admins/{Firebase_Auth_UID} document.
+    // Web clients cannot create, edit, or list admins.
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.active == true;
+    }
+
+    function validRsvp() {
+      let d = request.resource.data;
+      return d.keys().hasAll(['firstName', 'lastName', 'guests', 'createdAt'])
+        && d.keys().hasOnly(['firstName', 'lastName', 'guests', 'createdAt'])
+        && d.firstName is string
+        && d.firstName.size() >= 2
+        && d.firstName.size() <= 40
+        && d.lastName is string
+        && d.lastName.size() >= 2
+        && d.lastName.size() <= 40
+        && d.guests is int
+        && d.guests >= 1
+        && d.guests <= 20
+        && d.createdAt == request.time;
+    }
+
+    function validSettings() {
+      let d = request.resource.data;
+      return d.keys().hasAll(['title', 'subtitle', 'date', 'time', 'venue', 'address'])
+        && d.keys().hasOnly(['title', 'subtitle', 'date', 'time', 'venue', 'address'])
+        && d.title is string && d.title.size() >= 1 && d.title.size() <= 100
+        && d.subtitle is string && d.subtitle.size() <= 200
+        && d.date is string && d.date.size() <= 10
+        && d.time is string && d.time.size() <= 5
+        && d.venue is string && d.venue.size() <= 100
+        && d.address is string && d.address.size() <= 180;
+    }
+
+    match /admins/{userId} {
+      // The connected admin can verify their own membership, but cannot modify it.
+      allow get: if request.auth != null && request.auth.uid == userId;
+      allow list, create, update, delete: if false;
+    }
+
+    match /settings/{settingsId} {
+      // Visitors can read event information, never visitor records.
+      allow get: if settingsId == 'event';
+      allow list: if false;
+      allow create, update: if settingsId == 'event' && isAdmin() && validSettings();
+      allow delete: if settingsId == 'event' && isAdmin();
+    }
+
+    match /rsvps/{responseId} {
+      // Visitors may submit *new* RSVPs, with strictly validated fields.
+      allow create: if validRsvp();
+      // Only active administrators can read, edit a count, or delete submissions.
+      allow read: if isAdmin();
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['guests'])
+        && request.resource.data.guests is int
+        && request.resource.data.guests >= 1
+        && request.resource.data.guests <= 20;
+      allow delete: if isAdmin();
+    }
+
+    // Everything else is denied by default.
+  }
+}
