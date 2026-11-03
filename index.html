@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./assets/styles.css">
+  <link rel="stylesheet" href="./assets/event-times.css">
   <script type="module" src="./assets/guest.js"></script>
 </head>
 <body class="guest-page luxury-guest-page">
@@ -46,12 +47,22 @@
             <span id="eventAddress" class="luxury-detail-text" hidden></span>
             <a id="eventMapLink" class="map-link" href="#" target="_blank" rel="noopener noreferrer" hidden><span aria-hidden="true">↗</span> ניווט למקום ב־Waze / Google Maps</a>
           </article>
-          <article class="luxury-detail-card">
+
+          <article class="luxury-detail-card luxury-time-card">
             <div class="luxury-detail-icon" aria-hidden="true">🕘</div>
-            <span class="luxury-detail-label">שעה</span>
-            <strong id="eventTime">השעה תעודכן בקרוב</strong>
-            <span class="luxury-detail-text">סדר הברית</span>
+            <span class="luxury-detail-label">זמני האירוע</span>
+            <div class="event-time-panels">
+              <div class="event-time-panel">
+                <span class="event-time-heading"><span aria-hidden="true">🕖</span> שעת התחלת התפילה</span>
+                <strong id="eventTime">07:30</strong>
+              </div>
+              <div class="event-time-panel">
+                <span class="event-time-heading">שעת הברית</span>
+                <strong class="event-time-note">לאחר תפילת שחרית של שבת קודש</strong>
+              </div>
+            </div>
           </article>
+
           <article class="luxury-detail-card">
             <div class="luxury-detail-icon" aria-hidden="true">🗓️</div>
             <span class="luxury-detail-label">תאריך</span>
