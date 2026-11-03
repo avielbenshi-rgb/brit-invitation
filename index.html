@@ -44,6 +44,7 @@
             <span class="luxury-detail-label">מקום</span>
             <strong id="eventVenue">המקום יעודכן בקרוב</strong>
             <span id="eventAddress" class="luxury-detail-text" hidden></span>
+            <a id="eventMapLink" class="map-link" href="#" target="_blank" rel="noopener noreferrer" hidden><span aria-hidden="true">↗</span> ניווט למקום ב־Waze / Google Maps</a>
           </article>
           <article class="luxury-detail-card">
             <div class="luxury-detail-icon" aria-hidden="true">🕘</div>
@@ -59,7 +60,7 @@
           </article>
         </section>
 
-        <section class="luxury-rsvp-card" aria-label="אישור הגעה">
+        <section id="rsvpSection" class="luxury-rsvp-card" aria-label="אישור הגעה">
           <div class="luxury-card-mark" aria-hidden="true">✦</div>
           <h2>נשמח לארח אתכם בשמחתנו</h2>
           <p class="luxury-card-subtitle">נא אשרו את השתתפותכם כדי שנוכל להיערך בהתאם</p>
@@ -110,6 +111,8 @@
       </section>
     </main>
   </div>
+
+  <a id="scrollToRsvp" class="scroll-cue" href="#rsvpSection" aria-label="גללו למטה לאישור הגעה"><span class="scroll-cue-text">לאישור הגעה</span><span class="scroll-cue-arrow" aria-hidden="true">⌄</span></a>
 
   <div id="thanksOverlay" class="thanks-overlay" hidden>
     <section class="thanks-dialog" role="dialog" aria-modal="true" aria-labelledby="thanksTitle" aria-describedby="thanksDescription" tabindex="-1">

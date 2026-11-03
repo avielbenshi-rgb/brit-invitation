@@ -174,6 +174,7 @@ function listenForSettings() {
     byId("settingTime").value = settings.time || "";
     byId("settingVenue").value = settings.venue || "";
     byId("settingAddress").value = settings.address || "";
+    byId("settingMapUrl").value = settings.mapUrl || "";
   }, error => setMessage("dashboardError", `לא ניתן לטעון את פרטי האירוע: ${humanizeFirebaseError(error)}`));
 }
 async function enterDashboard(user) {
@@ -228,8 +229,21 @@ byId("settingsForm").addEventListener("submit", async (event) => {
     date: byId("settingDate").value,
     time: byId("settingTime").value,
     venue: byId("settingVenue").value.trim(),
-    address: byId("settingAddress").value.trim()
+    address: byId("settingAddress").value.trim(),
+    mapUrl: byId("settingMapUrl").value.trim()
   };
+  if (settings.mapUrl) {
+    try {
+      const mapUrl = new URL(settings.mapUrl);
+      const host = mapUrl.hostname.toLowerCase();
+      const allowed = ["waze.com", "www.waze.com", "maps.google.com", "google.com", "www.google.com", "goo.gl", "maps.app.goo.gl"];
+      if (!["https:", "http:"].includes(mapUrl.protocol) || !allowed.some(domain => host === domain || host.endsWith("." + domain))) throw new Error("unsupported map link");
+    } catch {
+      setMessage("settingsMessage", "יש להדביק קישור תקין של Waze או Google Maps שמתחיל ב־https://");
+      saveButton.disabled = false;
+      return;
+    }
+  }
   if (!settings.title || settings.title.length > 100) {
     setMessage("settingsMessage", "יש להזין כותרת תקינה.");
     saveButton.disabled = false;

@@ -31,6 +31,16 @@ function formatEventDate(dateString) {
   if (Number.isNaN(date.getTime()) || [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0"), String(date.getDate()).padStart(2, "0")].join("-") !== dateString) return "התאריך יעודכן בקרוב";
   return new Intl.DateTimeFormat("he-IL", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(date);
 }
+function safeNavigationUrl(value) {
+  if (typeof value !== "string" || !value.trim()) return "";
+  try {
+    const url = new URL(value.trim());
+    if (url.protocol !== "https:" && url.protocol !== "http:") return "";
+    const host = url.hostname.toLowerCase();
+    const allowed = ["waze.com", "www.waze.com", "maps.google.com", "google.com", "www.google.com", "goo.gl", "maps.app.goo.gl"];
+    return allowed.some(domain => host === domain || host.endsWith("." + domain)) ? url.href : "";
+  } catch { return ""; }
+}
 function displayError(message) {
   errorBox.textContent = message;
   errorBox.hidden = false;
@@ -52,6 +62,10 @@ async function loadEvent() {
     byId("eventVenue").textContent = event.venue || "המקום יעודכן בקרוב";
     byId("eventAddress").textContent = event.address || "";
     byId("eventAddress").hidden = !event.address;
+    const mapLink = byId("eventMapLink");
+    const safeMapUrl = safeNavigationUrl(event.mapUrl);
+    mapLink.hidden = !safeMapUrl;
+    if (safeMapUrl) mapLink.href = safeMapUrl;
     document.title = `${event.title || "הזמנה לברית מילה"} | אישור הגעה`;
   } catch (error) {
     byId("configAlert").textContent = "לא הצלחנו לטעון את פרטי האירוע. ודאו שהגדרות Firebase והרשאות הקריאה תקינות.";
@@ -118,3 +132,26 @@ form.addEventListener("submit", async (event) => {
 
 try { byId("previousNotice").hidden = localStorage.getItem("brit-rsvp-sent") !== "yes"; } catch { /* Browser privacy settings */ }
 loadEvent();
+
+
+// Floating RSVP prompt: gently bobs until the RSVP card is visible, then disappears.
+const scrollCue = byId("scrollToRsvp");
+const rsvpSection = byId("rsvpSection");
+if (scrollCue && rsvpSection && "IntersectionObserver" in window) {
+  const cueObserver = new IntersectionObserver(entries => {
+    const visible = entries.some(entry => entry.isIntersecting && entry.intersectionRatio >= 0.18);
+    scrollCue.classList.toggle("is-hidden", visible);
+    scrollCue.setAttribute("aria-hidden", visible ? "true" : "false");
+    if (visible) scrollCue.setAttribute("tabindex", "-1");
+    else scrollCue.removeAttribute("tabindex");
+  }, { threshold: [0, 0.18, 0.35] });
+  cueObserver.observe(rsvpSection);
+} else if (scrollCue && rsvpSection) {
+  const updateCue = () => {
+    const rect = rsvpSection.getBoundingClientRect();
+    const visible = rect.top < window.innerHeight * 0.82 && rect.bottom > window.innerHeight * 0.18;
+    scrollCue.classList.toggle("is-hidden", visible);
+  };
+  window.addEventListener("scroll", updateCue, { passive: true });
+  updateCue();
+}

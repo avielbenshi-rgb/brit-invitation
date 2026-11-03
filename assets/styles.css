@@ -98,3 +98,48 @@
   .luxury-detail-card strong{font-size:26px}
   .luxury-detail-text{font-size:17px}
 }
+
+
+/* Floating RSVP cue, map link, and mobile overflow hardening */
+.scroll-cue{position:fixed;z-index:30;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:9px 17px 9px 13px;border:1px solid rgba(185,148,82,.48);border-radius:999px;background:rgba(255,253,247,.95);color:#34513e;text-decoration:none;box-shadow:0 8px 28px rgba(54,67,49,.14);backdrop-filter:blur(12px);font-size:14px;font-weight:700;transition:opacity .28s ease,transform .28s ease,visibility .28s ease;animation:scroll-cue-float 1.8s ease-in-out infinite}
+.scroll-cue-arrow{font-size:25px;line-height:.8;color:#a77b32;animation:scroll-cue-bounce 1.2s ease-in-out infinite}
+.scroll-cue.is-hidden{opacity:0;visibility:hidden;pointer-events:none;transform:translate(-50%,14px);animation:none}
+@keyframes scroll-cue-float{0%,100%{margin-bottom:0}50%{margin-bottom:5px}}
+@keyframes scroll-cue-bounce{0%,100%{transform:translateY(-2px)}50%{transform:translateY(4px)}}
+.map-link{display:inline-flex;align-items:center;justify-content:center;gap:7px;margin-top:10px;padding:8px 14px;border-radius:999px;border:1px solid #d2b77f;background:#fffaf0;color:#6d552b;text-decoration:none;font-size:15px;font-weight:700;max-width:100%;overflow-wrap:anywhere}
+.map-link:hover{background:#f4ead6}
+.field-help{display:block;margin:7px 0 0;color:#7c8779;font-size:13px;line-height:1.5}
+html,body{max-width:100%;overflow-x:clip}
+.luxury-shell,.luxury-layout,.luxury-content,.luxury-rsvp-card,.luxury-detail-card{min-width:0}
+.luxury-title,.luxury-subtitle,.luxury-description,.luxury-detail-card strong,.luxury-detail-text{overflow-wrap:anywhere;word-break:normal}
+.luxury-plaque{max-width:100%;min-width:0;overflow-wrap:anywhere}
+.luxury-detail-card strong{white-space:normal}
+.luxury-form input{min-width:0;max-width:100%}
+.map-link:focus-visible,.scroll-cue:focus-visible{outline:3px solid #9bc9a3;outline-offset:4px}
+@media(max-width:860px){
+ .luxury-layout{grid-template-columns:minmax(0,1fr)}
+ .luxury-visual-panel,.luxury-content{width:100%;min-width:0}
+ .luxury-visual{width:100%;height:auto;object-fit:cover}
+ .luxury-details{grid-template-columns:minmax(0,1fr);width:100%}
+ .luxury-detail-card,.luxury-rsvp-card{width:100%;min-width:0}
+ .luxury-form .three-cols{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:480px){
+ .luxury-shell{padding-inline:14px;padding-top:48px}
+ .luxury-header{grid-template-columns:minmax(12px,1fr) auto minmax(12px,1fr);gap:7px}
+ .luxury-plaque{font-size:clamp(18px,5.1vw,25px);padding:10px 12px;min-height:58px}
+ .luxury-crown{display:none}
+ .luxury-title{font-size:clamp(39px,13vw,58px);line-height:1.13}
+ .luxury-subtitle{font-size:clamp(27px,8vw,36px);line-height:1.25}
+ .luxury-description{font-size:17px;line-height:1.65}
+ .luxury-detail-card{padding-inline:12px}
+ .luxury-detail-card strong{font-size:24px;line-height:1.35}
+ .luxury-detail-text{font-size:16px}
+ .luxury-rsvp-card{padding:28px 14px 22px}
+ .luxury-rsvp-card h2{font-size:clamp(25px,7.2vw,31px);line-height:1.25}
+ .luxury-card-subtitle{font-size:16px;line-height:1.5}
+ .luxury-field input{font-size:16px}
+ .luxury-submit{width:100%;min-width:0}
+ .scroll-cue{bottom:max(12px,env(safe-area-inset-bottom));font-size:13px;padding:8px 14px}
+}
+@media(prefers-reduced-motion:reduce){.scroll-cue,.scroll-cue-arrow{animation:none}.scroll-cue{transition:none}}
