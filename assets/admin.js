@@ -63,29 +63,55 @@ function makeButton(text, className, handler, label) {
   button.addEventListener("click", handler);
   return button;
 }
-async function editResponse(response) {
-  const value = window.prompt(`כמה מגיעים עבור ${response.firstName} ${response.lastName}? (1–20)`, String(response.guests));
-  if (value === null) return;
-  if (!/^\d+$/.test(value.trim()) || Number(value) < 1 || Number(value) > 20) {
-    toast("יש להזין מספר שלם בין 1 ל־20.");
-    return;
-  }
-  try {
-    await updateDoc(doc(db, "rsvps", response.id), { guests: Number(value) });
-    toast("מספר המגיעים עודכן בהצלחה.");
-  } catch (error) {
-    setMessage("dashboardError", humanizeFirebaseError(error));
-  }
+let dialogAction = null;
+function openResponseDialog(mode, response) {
+  const dialog = byId("responseDialog");
+  dialogAction = { mode, response };
+  byId("responseDialogError").hidden = true;
+  byId("responseDialogGuestsWrap").hidden = mode === "delete";
+  byId("responseDialogTitle").textContent = mode === "delete" ? "מחיקת אישור" : "עריכת מספר מגיעים";
+  byId("responseDialogDescription").textContent = mode === "delete"
+    ? `למחוק את האישור של ${response.firstName} ${response.lastName}? לא ניתן לשחזר אותו.`
+    : `${response.firstName} ${response.lastName}`;
+  byId("responseDialogConfirm").textContent = mode === "delete" ? "מחיקת אישור" : "שמירת שינוי";
+  byId("responseDialogConfirm").classList.toggle("danger-button", mode === "delete");
+  byId("responseDialogGuests").value = String(response.guests);
+  dialog.showModal();
+  if (mode === "edit") byId("responseDialogGuests").focus();
+  else byId("responseDialogCancel").focus();
 }
-async function deleteResponse(response) {
-  if (!window.confirm(`למחוק את האישור של ${response.firstName} ${response.lastName}? לא ניתן לבטל פעולה זו.`)) return;
-  try {
-    await deleteDoc(doc(db, "rsvps", response.id));
-    toast("אישור ההגעה נמחק.");
-  } catch (error) {
-    setMessage("dashboardError", humanizeFirebaseError(error));
+function editResponse(response) { openResponseDialog("edit", response); }
+function deleteResponse(response) { openResponseDialog("delete", response); }
+byId("responseDialogCancel").addEventListener("click", () => byId("responseDialog").close());
+byId("responseDialog").addEventListener("close", () => { dialogAction = null; });
+byId("responseDialogForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!dialogAction) return;
+  const { mode, response } = dialogAction;
+  const confirmButton = byId("responseDialogConfirm");
+  if (mode === "edit") {
+    const value = byId("responseDialogGuests").value.trim();
+    if (!/^\d+$/.test(value) || Number(value) < 1 || Number(value) > 20) {
+      byId("responseDialogError").textContent = "יש להזין מספר שלם בין 1 ל־20.";
+      byId("responseDialogError").hidden = false;
+      return;
+    }
   }
-}
+  confirmButton.disabled = true;
+  try {
+    if (mode === "delete") {
+      await deleteDoc(doc(db, "rsvps", response.id));
+      toast("האישור נמחק.");
+    } else {
+      await updateDoc(doc(db, "rsvps", response.id), { guests: Number(byId("responseDialogGuests").value) });
+      toast("מספר המגיעים עודכן.");
+    }
+    byId("responseDialog").close();
+  } catch (error) {
+    byId("responseDialogError").textContent = humanizeFirebaseError(error);
+    byId("responseDialogError").hidden = false;
+  } finally { confirmButton.disabled = false; }
+});
 function renderResponses() {
   const query = byId("searchInput").value.trim().toLocaleLowerCase("he-IL");
   const filtered = currentResponses.filter(person =>
@@ -234,12 +260,14 @@ byId("settingsForm").addEventListener("submit", async (event) => {
   };
   if (settings.mapUrl) {
     try {
-      const mapUrl = new URL(settings.mapUrl);
-      const host = mapUrl.hostname.toLowerCase();
-      const allowed = ["waze.com", "www.waze.com", "maps.google.com", "google.com", "www.google.com", "goo.gl", "maps.app.goo.gl"];
-      if (!["https:", "http:"].includes(mapUrl.protocol) || !allowed.some(domain => host === domain || host.endsWith("." + domain))) throw new Error("unsupported map link");
+      const url = new URL(settings.mapUrl);
+      const host = url.hostname.toLowerCase();
+      const allowed = ["waze.com", "google.com", "goo.gl"];
+      if (url.protocol !== "https:" || !allowed.some(domain => host === domain || host.endsWith("." + domain))) {
+        throw new Error("unsupported map link");
+      }
     } catch {
-      setMessage("settingsMessage", "יש להדביק קישור תקין של Waze או Google Maps שמתחיל ב־https://");
+      setMessage("settingsMessage", "יש להזין קישור HTTPS תקין של Waze או Google Maps.");
       saveButton.disabled = false;
       return;
     }
@@ -253,7 +281,9 @@ byId("settingsForm").addEventListener("submit", async (event) => {
     await setDoc(doc(db, "settings", "event"), settings);
     setMessage("settingsMessage", "פרטי האירוע נשמרו בהצלחה והם זמינים בדף ההזמנה.", "success");
   } catch (error) {
-    setMessage("settingsMessage", humanizeFirebaseError(error));
+    setMessage("settingsMessage", error?.code === "permission-denied" || error?.code === "firestore/permission-denied"
+      ? "השמירה נחסמה. יש לפרסם את קובץ firestore.rules המצורף ב־Firebase Console, ולוודא שהחשבון מוגדר כמנהל."
+      : humanizeFirebaseError(error));
   } finally {
     saveButton.disabled = false;
   }

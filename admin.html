@@ -2,77 +2,96 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#e8e8dd">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f5f2">
   <meta name="robots" content="noindex,nofollow">
-  <title>ניהול אישורי הגעה | הברית שלנו</title>
+  <title>ניהול האירוע | ברית מילה</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/styles.css">
-  <script type="module" src="./assets/admin.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/admin.css?v=20261115-3">
+  <script type="module" src="./assets/admin.js?v=20261115-3"></script>
 </head>
 <body class="admin-page">
-  <div id="loadingView" class="auth-layout"><div class="auth-card"><span class="loader" aria-hidden="true"></span><p>טוענים את המערכת...</p></div></div>
+  <div id="loadingView" class="auth-layout"><div class="auth-card loading-card"><span class="loader" aria-hidden="true"></span><p>טוענים...</p></div></div>
 
   <section id="loginView" class="auth-layout" hidden aria-labelledby="loginTitle">
     <div class="auth-card">
-      <span class="auth-logo" aria-hidden="true">✺</span>
-      <p class="eyebrow">ממשק ניהול אישי</p>
-      <h1 id="loginTitle">ברוכים הבאים</h1>
-      <p class="auth-explanation">כניסה מאובטחת לניהול ההזמנה ואישורי ההגעה.</p>
-      <div id="setupMessage" class="form-message message-error" hidden>לפני הכניסה יש לחבר את האתר ל־Firebase בקובץ firebase-config.js.</div>
+      <p class="auth-kicker">ניהול האירוע</p>
+      <h1 id="loginTitle">כניסת מנהל</h1>
+      <p class="auth-explanation">התחברות למערכת אישורי ההגעה</p>
+      <div id="setupMessage" class="form-message message-error" hidden>יש להשלים את הגדרות Firebase.</div>
       <form id="loginForm">
-        <div class="field"><label for="email">כתובת אימייל</label><input id="email" type="email" autocomplete="username" placeholder="you@example.com" dir="ltr" required></div>
+        <div class="field"><label for="email">כתובת אימייל</label><input id="email" type="email" autocomplete="username" placeholder="name@example.com" dir="ltr" required></div>
         <div class="field"><label for="password">סיסמה</label><input id="password" type="password" autocomplete="current-password" minlength="6" required></div>
         <p id="loginError" class="form-message message-error" role="alert" hidden></p>
-        <button id="loginButton" type="submit" class="primary-button">כניסה לניהול <span aria-hidden="true">←</span></button>
+        <button id="loginButton" type="submit" class="primary-button">כניסה למערכת <span aria-hidden="true">←</span></button>
       </form>
-      <a class="subtle-link" href="./index.html">← חזרה לדף ההזמנה</a>
+      <a class="subtle-link" href="./index.html">חזרה להזמנה</a>
     </div>
   </section>
 
   <div id="dashboardView" class="dashboard" hidden>
     <aside class="sidebar">
-      <a class="sidebar-brand" href="./index.html"><span class="brand-mark">✺</span><span>הברית שלנו<small>ניהול האירוע</small></span></a>
-      <nav class="sidebar-nav" aria-label="ניווט ניהול">
-        <a href="#overview"><span>◫</span> סקירה כללית</a>
-        <a href="#attendees"><span>♧</span> רשימת מוזמנים</a>
-        <a href="#settings"><span>✎</span> פרטי האירוע</a>
-      </nav>
-      <div class="sidebar-bottom"><a href="./index.html" target="_blank" rel="noopener">פתיחת ההזמנה ↗</a><button type="button" id="logoutButton">התנתקות <span aria-hidden="true">↩</span></button></div>
+      <div class="sidebar-top">
+        <a class="sidebar-brand" href="./index.html"><span class="brand-symbol" aria-hidden="true">ב</span><span class="brand-name">ניהול האירוע<small>ברית מילה</small></span></a>
+        <nav class="sidebar-nav" aria-label="ניווט ראשי">
+          <a href="#overview"><span class="nav-symbol" aria-hidden="true">01</span>סקירה</a>
+          <a href="#attendees"><span class="nav-symbol" aria-hidden="true">02</span>אישורי הגעה</a>
+          <a href="#settings"><span class="nav-symbol" aria-hidden="true">03</span>עריכת ההזמנה</a>
+        </nav>
+      </div>
+      <div class="sidebar-bottom"><a href="./index.html" target="_blank" rel="noopener noreferrer">צפייה בהזמנה <span aria-hidden="true">↗</span></a><button id="logoutButton" type="button">התנתקות</button></div>
     </aside>
 
     <main class="admin-main">
-      <header class="admin-topbar"><div><p class="eyebrow">מרכז הניהול</p><h1>האירוע שלנו <span aria-hidden="true">✦</span></h1></div><div class="topbar-actions"><button id="copyLinkButton" class="outline-button" type="button">העתקת לינק להזמנה</button><span id="userEmail" class="user-chip"></span></div></header>
+      <header class="admin-topbar">
+        <div class="page-title"><p class="eyebrow">לוח בקרה</p><h1>ניהול האירוע</h1></div>
+        <div class="topbar-actions"><button id="copyLinkButton" class="outline-button" type="button">העתקת קישור להזמנה</button><span id="userEmail" class="user-chip"></span></div>
+      </header>
       <div id="dashboardError" class="form-message message-error" role="alert" hidden></div>
 
       <section id="overview" class="overview-section" aria-labelledby="overviewTitle">
-        <div class="section-heading"><div><p class="eyebrow">תמונת מצב</p><h2 id="overviewTitle">כל המספרים, במקום אחד</h2></div><span class="live-label"><span class="live-dot"></span> מתעדכן בזמן אמת</span></div>
-        <div class="metrics"><article class="metric-card"><span class="metric-symbol">♧</span><p>סה״כ אנשים שמגיעים</p><strong id="totalGuests">0</strong><small>כולל כל האישורים</small></article><article class="metric-card"><span class="metric-symbol">✧</span><p>מספר אישורי הגעה</p><strong id="totalResponses">0</strong><small>משפחות / קבוצות</small></article><article class="metric-card"><span class="metric-symbol">✦</span><p>האישור האחרון</p><strong id="lastResponse" class="metric-date">—</strong><small>מתעדכן אוטומטית</small></article></div>
+        <div class="section-heading"><div><h2 id="overviewTitle">סקירה כללית</h2></div><span class="live-label"><span class="live-dot" aria-hidden="true"></span>עדכון בזמן אמת</span></div>
+        <div class="metrics">
+          <article class="metric-card"><p>סה״כ מגיעים</p><strong id="totalGuests">0</strong><small>מספר אנשים</small></article>
+          <article class="metric-card"><p>אישורי הגעה</p><strong id="totalResponses">0</strong><small>משפחות וקבוצות</small></article>
+          <article class="metric-card"><p>האישור האחרון</p><strong id="lastResponse" class="metric-date">—</strong><small>תאריך ושעה</small></article>
+        </div>
       </section>
 
       <section id="attendees" class="panel attendees-panel" aria-labelledby="attendeesTitle">
-        <div class="panel-top"><div><p class="eyebrow">המוזמנים שלנו</p><h2 id="attendeesTitle">אישורי הגעה <span id="responseCountBadge" class="count-pill">0</span></h2></div><button id="exportButton" class="outline-button" type="button">↓ ייצוא לאקסל (CSV)</button></div>
-        <div class="toolbar"><label class="search-box" for="searchInput"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="חיפוש לפי שם פרטי או משפחה..."></label><span id="tableSummary" class="table-summary">0 תוצאות</span><button id="refreshResponses" class="outline-button" type="button">↻ רענון הרשימה</button></div>
-        <p id="syncStatus" class="section-support" role="status" aria-live="polite">ממתינים לנתונים...</p><div class="table-scroll"><table><thead><tr><th>שם מלא</th><th>מספר מגיעים</th><th>זמן אישור</th><th>פעולות</th></tr></thead><tbody id="responsesBody"><tr><td colspan="4" class="empty-table">טוענים אישורי הגעה...</td></tr></tbody></table></div>
+        <div class="panel-top"><div><h2 id="attendeesTitle">אישורי הגעה <span id="responseCountBadge" class="count-pill">0</span></h2><p class="section-support">רשימת האישורים שהתקבלו</p></div><button id="exportButton" class="outline-button" type="button">ייצוא CSV <span aria-hidden="true">↓</span></button></div>
+        <div class="toolbar"><label class="search-box" for="searchInput"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="חיפוש לפי שם..."></label><span id="tableSummary" class="table-summary">0 תוצאות</span><button id="refreshResponses" class="outline-button" type="button">רענון</button></div>
+        <p id="syncStatus" class="sync-status" role="status" aria-live="polite">ממתינים לנתונים...</p>
+        <div class="table-scroll"><table><thead><tr><th>שם מלא</th><th>מספר מגיעים</th><th>מועד אישור</th><th>פעולות</th></tr></thead><tbody id="responsesBody"><tr><td colspan="4" class="empty-table">טוענים אישורים...</td></tr></tbody></table></div>
       </section>
 
-      <section id="settings" class="panel settings-panel" aria-labelledby="settingsTitle"><div class="panel-top"><div><p class="eyebrow">התאמה אישית</p><h2 id="settingsTitle">פרטי ההזמנה</h2><p class="section-support">כל שינוי שתשמרו יוצג בדף ההזמנה של האורחים.</p></div></div>
+      <section id="settings" class="panel settings-panel" aria-labelledby="settingsTitle">
+        <div class="panel-top"><div><h2 id="settingsTitle">עריכת ההזמנה</h2><p class="section-support">השינויים יופיעו בדף האורחים לאחר השמירה</p></div></div>
         <form id="settingsForm">
-          <div class="field"><label for="settingTitle">כותרת ההזמנה</label><input id="settingTitle" maxlength="100" placeholder="מזמינים אתכם לברית המילה" required></div>
-          <div class="field"><label for="settingSubtitle">טקסט מתחת לכותרת</label><input id="settingSubtitle" maxlength="200" placeholder="נשמח לחגוג יחד איתכם את הרגע המרגש שלנו"></div>
-          <div class="form-grid"><div class="field"><label for="settingDate">תאריך האירוע</label><input id="settingDate" type="date"></div><div class="field"><label for="settingTime">שעת האירוע</label><input id="settingTime" type="time"></div></div>
-          <div class="form-grid"><div class="field"><label for="settingVenue">שם האולם / המקום</label><input id="settingVenue" maxlength="100" placeholder="למשל: אולם השמחות"></div><div class="field"><label for="settingAddress">כתובת מלאה</label><input id="settingAddress" maxlength="180" placeholder="רחוב, מספר ועיר"></div></div>
-          <div class="field map-url-field"><label for="settingMapUrl">קישור לניווט (Waze או Google Maps)</label><input id="settingMapUrl" type="url" inputmode="url" maxlength="500" dir="ltr" placeholder="https://waze.com/ul או https://maps.google.com/..."><small class="field-help">הדבק כאן קישור שיתוף מ־Waze או Google Maps. באתר האורחים יופיע כפתור ניווט.</small></div>
+          <div class="field"><label for="settingTitle">כותרת ההזמנה</label><input id="settingTitle" maxlength="100" placeholder="הזמנה לברית המילה" required></div>
+          <div class="field"><label for="settingSubtitle">כותרת משנה</label><input id="settingSubtitle" maxlength="200" placeholder="של בננו היקר"></div>
+          <div class="form-grid"><div class="field"><label for="settingDate">תאריך</label><input id="settingDate" type="date"></div><div class="field"><label for="settingTime">שעת התחלה</label><input id="settingTime" type="time"></div></div>
+          <div class="form-grid"><div class="field"><label for="settingVenue">שם המקום</label><input id="settingVenue" maxlength="100" placeholder="שם בית הכנסת או האולם"></div><div class="field"><label for="settingAddress">כתובת</label><input id="settingAddress" maxlength="180" placeholder="רחוב, מספר ועיר"></div></div>
+          <div class="field"><label for="settingMapUrl">קישור ניווט (Waze / Google Maps)</label><input id="settingMapUrl" type="url" inputmode="url" maxlength="500" dir="ltr" placeholder="https://maps.app.goo.gl/..."><small class="field-help">הדביקו קישור שיתוף מהאפליקציה</small></div>
           <p id="settingsMessage" class="form-message" role="status" hidden></p>
-          <div class="form-actions"><button id="saveSettingsButton" class="primary-button" type="submit">שמירת פרטי האירוע <span aria-hidden="true">✓</span></button><span class="section-support">אפשר להשאיר תאריך, שעה ומקום ריקים עד שתחליטו.</span></div>
+          <div class="form-actions"><button id="saveSettingsButton" class="primary-button" type="submit">שמירת שינויים</button><a href="./index.html" target="_blank" rel="noopener noreferrer" class="outline-button preview-link">תצוגת ההזמנה <span aria-hidden="true">↗</span></a></div>
         </form>
       </section>
-      <footer class="dashboard-footer">נבנה באהבה לרגעים שזוכרים ♡</footer>
     </main>
   </div>
+
+  <dialog id="responseDialog" class="response-dialog" aria-labelledby="responseDialogTitle" aria-describedby="responseDialogDescription">
+    <form id="responseDialogForm" novalidate>
+      <h2 id="responseDialogTitle">עריכת אישור</h2>
+      <p id="responseDialogDescription"></p>
+      <div id="responseDialogGuestsWrap" class="field"><label for="responseDialogGuests">מספר מגיעים</label><input id="responseDialogGuests" type="number" inputmode="numeric" min="1" max="20" step="1"></div>
+      <p id="responseDialogError" class="form-message message-error" role="alert" hidden></p>
+      <div class="dialog-actions"><button id="responseDialogCancel" type="button" class="outline-button">ביטול</button><button id="responseDialogConfirm" type="submit" class="primary-button">שמירה</button></div>
+    </form>
+  </dialog>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 </body>
 </html>

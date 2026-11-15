@@ -24,15 +24,15 @@ function normalizeTime(value) {
 
 function formatDate(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-    return "התאריך יעודכן בקרוב";
+    return "—";
   }
   const date = new Date(`${value}T12:00:00`);
-  if (Number.isNaN(date.getTime())) return "התאריך יעודכן בקרוב";
+  if (Number.isNaN(date.getTime())) return "—";
   // Prevent overflow dates such as 2026-02-31 from displaying as March.
   const sameDate = date.getFullYear() === Number(value.slice(0, 4)) &&
     date.getMonth() + 1 === Number(value.slice(5, 7)) &&
     date.getDate() === Number(value.slice(8, 10));
-  if (!sameDate) return "התאריך יעודכן בקרוב";
+  if (!sameDate) return "—";
   return new Intl.DateTimeFormat("he-IL", {
     weekday: "long", day: "numeric", month: "long", year: "numeric",
     timeZone: "Asia/Jerusalem"
@@ -63,7 +63,7 @@ function renderEvent(settings) {
   el("eventDate").textContent = formatDate(settings.date);
   // Show the actual saved admin time. 07:30 remains the default if unset/invalid.
   el("eventTime").textContent = normalizeTime(settings.time) || "07:30";
-  el("eventVenue").textContent = settings.venue || "המקום יעודכן בקרוב";
+  el("eventVenue").textContent = settings.venue || "—";
   const address = typeof settings.address === "string" ? settings.address.trim() : "";
   el("eventAddress").textContent = address;
   el("eventAddress").hidden = !address;
