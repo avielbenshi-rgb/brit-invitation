@@ -1,0 +1,6 @@
+index.html – לבצע את שלושת השינויים הבאים:
+1. בתוך event-time-heading החליפו את הטקסט "שעת התחלת התפילה" ב-"שעת התחלה".
+2. מחקו את ה-div השני בעל class="event-time-panel" שמכיל "שעת הברית" ואת הטקסט "לאחר תפילת שחרית של שבת קודש".
+3. מחקו את האלמנט div#previousNotice.
+4. בתוך head הוסיפו אחרי קובצי ה-CSS הקיימים:
+<link rel="stylesheet" href="./assets/premium-refresh.css">
