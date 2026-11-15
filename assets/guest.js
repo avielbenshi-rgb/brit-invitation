@@ -61,8 +61,8 @@ function renderEvent(settings) {
     el("eventSubtitle").textContent = settings.subtitle.trim();
   }
   el("eventDate").textContent = formatDate(settings.date);
-  // Show the actual saved admin time. 07:30 remains the default if unset/invalid.
-  el("eventTime").textContent = normalizeTime(settings.time) || "07:30";
+  // Show the actual saved admin time. 15:00 remains the default if unset/invalid.
+  el("eventTime").textContent = normalizeTime(settings.time) || "15:00";
   el("eventVenue").textContent = settings.venue || "—";
   const address = typeof settings.address === "string" ? settings.address.trim() : "";
   el("eventAddress").textContent = address;
