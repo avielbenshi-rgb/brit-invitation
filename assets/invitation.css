@@ -1,0 +1,251 @@
+:root{
+  --evergreen:#172c29;
+  --evergreen-deep:#0e201f;
+  --gold:#b59a65;
+  --gold-pale:#dac7a2;
+  --paper:#fbf9f3;
+  --ink:#24342c;
+  --muted:#697269;
+  --line:#e7dcc7;
+  font-family:'Assistant',sans-serif;
+  color:var(--ink);
+  font-synthesis:none;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;min-width:320px}
+button,input{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.63}
+a{color:inherit}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #c6aa72;outline-offset:4px}
+[hidden]{display:none!important}
+body.invitation-page{
+  min-height:100vh;
+  overflow-x:clip;
+  padding:clamp(12px,3vw,38px);
+  background:radial-gradient(circle at 50% 10%,#315148 0,#203d35 28%,#102a27 70%,#0c2221 100%);
+}
+.ambient-stars{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;font-size:80vw;line-height:1;color:rgba(255,255,255,.022);z-index:0}
+.invitation-paper{
+  position:relative;
+  z-index:1;
+  width:min(100%,1040px);
+  margin:0 auto;
+  border:1px solid #b69a64;
+  background:
+    radial-gradient(ellipse at 0 15%,rgba(238,223,188,.29),transparent 34%),
+    radial-gradient(ellipse at 100% 87%,rgba(238,223,188,.2),transparent 40%),
+    #faf8f2;
+  box-shadow:0 38px 110px rgba(0,0,0,.3),0 4px 18px rgba(0,0,0,.13);
+}
+.invitation-paper:before{
+  position:absolute;content:"";inset:11px;border:1px solid rgba(181,154,101,.58);pointer-events:none;z-index:2;
+}
+.invitation-inner{padding:clamp(31px,5vw,76px) clamp(22px,5vw,72px) 22px}
+.ornament-corner{position:absolute;width:38px;height:38px;pointer-events:none;z-index:3}
+.corner-tr{top:17px;right:17px;border-top:2px solid var(--gold);border-right:2px solid var(--gold)}
+.corner-tl{top:17px;left:17px;border-top:2px solid var(--gold);border-left:2px solid var(--gold)}
+.corner-br{bottom:17px;right:17px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold)}
+.corner-bl{bottom:17px;left:17px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold)}
+.invitation-header{position:relative;text-align:center;margin:0 auto 38px}
+.bsd{position:absolute;right:0;top:-23px;color:#6c705e;font-size:15px;font-weight:700}
+.header-blessing{
+  display:inline-block;
+  margin:0;
+  color:#4b5e4a;
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:clamp(19px,2.5vw,28px);
+  font-weight:600;
+  line-height:1.45;
+  letter-spacing:.01em;
+}
+.divider-motif,.section-transition{display:flex;justify-content:center;align-items:center;gap:15px;margin:18px auto;color:var(--gold)}
+.divider-motif span,.section-transition span{height:1px;width:min(110px,18vw);background:linear-gradient(90deg,transparent,var(--gold))}
+.divider-motif span:last-child,.section-transition span:last-child{transform:scaleX(-1)}
+.divider-motif i{font-size:20px;font-style:normal}
+.intro-layout{display:grid;grid-template-columns:minmax(0,1.13fr) minmax(0,.87fr);align-items:center;gap:clamp(24px,5vw,64px);margin:0 auto}
+.intro-text{text-align:center;min-width:0}
+.invitation-overline{margin:0 0 10px;color:#947343;font-size:15px;font-weight:700;letter-spacing:.14em}
+.invite-preface{margin:0 0 12px;font-family:'Frank Ruhl Libre',serif;font-size:clamp(23px,2.8vw,33px);color:#556354}
+.event-title{
+  margin:0;
+  font-family:'Frank Ruhl Libre',serif;
+  color:#1f443b;
+  font-size:clamp(44px,5.8vw,72px);
+  font-weight:700;
+  line-height:1.18;
+  letter-spacing:-.02em;
+  overflow-wrap:anywhere;
+}
+.event-subtitle{
+  margin:10px 0 0;
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:clamp(28px,3.2vw,43px);
+  color:#9a7545;
+  line-height:1.25;
+  font-weight:500;
+  overflow-wrap:anywhere;
+}
+.tiny-motif{margin:17px 0 13px;color:#a58957;font-size:15px;letter-spacing:13px;white-space:nowrap}
+.welcome-copy{
+  margin:0 auto;
+  color:#5d665e;
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:clamp(21px,2.4vw,29px);
+  line-height:1.45;
+}
+.hero-photo{width:100%;min-width:0;max-width:388px;position:relative;margin:0 auto;padding:13px;text-align:center}
+.hero-photo:before,.hero-photo:after{position:absolute;content:"";pointer-events:none;border:1px solid var(--gold);z-index:0}
+.hero-photo:before{top:0;bottom:23px;right:0;left:25px}
+.hero-photo:after{top:25px;bottom:0;right:25px;left:0;opacity:.55}
+.hero-photo-frame{position:relative;z-index:1;overflow:hidden;border:5px solid #fdfbf5;box-shadow:0 18px 40px rgba(38,44,30,.16);aspect-ratio:5/6}
+.hero-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:34% 45%}
+.hero-photo figcaption{position:relative;z-index:1;margin:12px 0 0;font-family:'Frank Ruhl Libre',serif;font-size:20px;color:#95784d}
+.section-transition{margin:45px auto 27px}
+.section-transition b{font-weight:400;font-size:20px}
+.event-details{text-align:center;min-width:0;scroll-margin-top:20px}
+.eyebrow{color:#957649;font-size:14px;letter-spacing:.15em;font-weight:800;margin:0 0 8px}
+.section-heading{
+  margin:0 0 25px;
+  font-family:'Frank Ruhl Libre',serif;
+  font-size:clamp(29px,3.4vw,43px);
+  color:#22483e;
+  font-weight:600;
+}
+.details-duo{display:grid;grid-template-columns:1fr 1fr;border-block:1px solid var(--gold);padding:21px 0;margin:0 auto;max-width:700px}
+.detail-block{min-width:0;padding:8px 13px}
+.detail-block + .detail-block{border-right:1px solid var(--line)}
+.detail-label{margin:0 0 7px;color:#8d7349;font-size:15px;font-weight:800;letter-spacing:.02em}
+.detail-value{margin:0;color:#24493d;font-family:'Frank Ruhl Libre',serif;font-weight:700;font-size:clamp(24px,3vw,38px);line-height:1.3;overflow-wrap:anywhere}
+.time-value{font-family:'Assistant',sans-serif;font-size:clamp(33px,4vw,48px);font-weight:800;letter-spacing:.01em}
+.venue-block{position:relative;padding:25px 12px 5px;max-width:690px;margin:0 auto}
+.venue-ornament{width:34px;height:34px;display:grid;place-items:center;margin:0 auto 9px;color:#ad9164;font-size:27px}
+.venue-name{margin:5px 0 2px;color:#24493d;font-family:'Frank Ruhl Libre',serif;font-size:clamp(28px,3.7vw,47px);font-weight:600;line-height:1.2;overflow-wrap:anywhere}
+.venue-address{margin:6px 0;color:#737b6f;font-size:clamp(16px,2vw,21px);line-height:1.5;overflow-wrap:anywhere}
+.navigation-link{
+  display:inline-flex;justify-content:center;align-items:center;gap:10px;
+  max-width:100%;min-height:46px;margin:20px auto 0;padding:9px 18px;
+  color:#294338;background:#f3ecd9;border:1px solid #bda578;
+  font-size:15px;font-weight:800;line-height:1.4;text-decoration:none;transition:background .2s ease,transform .2s ease;
+}
+.navigation-link:hover{background:#e8dbc1;transform:translateY(-2px)}
+.navigation-icon{font-size:21px;color:#8d7348}
+.before-rsvp{margin:46px auto 34px}
+.rsvp-section{
+  scroll-margin-top:20px;position:relative;
+  max-width:790px;margin:0 auto;
+  background:linear-gradient(140deg,#26453e 0%,#193830 65%,#102c29 100%);
+  border:1px solid #b49b69;padding:clamp(27px,5vw,48px) clamp(19px,5vw,52px) clamp(24px,4vw,39px);
+  box-shadow:0 21px 45px rgba(17,42,34,.18);
+  color:#fcf9ed;
+}
+.rsvp-section:before{position:absolute;content:"";inset:8px;border:1px solid rgba(217,197,156,.36);pointer-events:none}
+.rsvp-heading-wrap{text-align:center;position:relative}
+.rsvp-heading-wrap .eyebrow{color:#d2bf96}
+.rsvp-heading-wrap h2{font-family:'Frank Ruhl Libre',serif;font-weight:600;color:#fffaf0;font-size:clamp(34px,4.2vw,53px);line-height:1.2;margin:0 0 10px}
+.rsvp-heading-wrap > p:last-child{margin:0 auto 23px;color:#e1e0d4;font-size:17px;line-height:1.5;max-width:430px}
+.rsvp-form{position:relative}
+.form-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.field{min-width:0;margin:0}
+.field:nth-child(3){grid-column:1/-1;max-width:240px;justify-self:center;width:100%;margin-top:3px}
+.field label{display:block;margin:0 0 7px;color:#e4cfaa;font-size:15px;font-weight:800}
+.field label span{color:#ffbd9d}
+.field input{
+  display:block;max-width:100%;min-width:0;width:100%;height:51px;
+  padding:0 14px;background:#fffdf8;border:1px solid #d3ba8d;
+  border-radius:0;color:#183a33;font-size:17px;
+}
+.field input::placeholder{color:#999f99}
+.guests-stepper{display:grid;grid-template-columns:45px minmax(0,1fr) 45px;border:1px solid #d3ba8d;background:#fffdf8}
+.guests-stepper button{border:0;background:#e7ddcb;color:#385045;font-size:25px;min-height:50px;line-height:1}
+.guests-stepper button:hover{background:#d9c8a7}
+.guests-stepper input{border:0;border-inline:1px solid #d3ba8d;border-radius:0;height:50px;padding:0;text-align:center;font-size:21px;background:#fffdf8}
+.guests-stepper input::-webkit-outer-spin-button,.guests-stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.guests-stepper input[type=number]{-moz-appearance:textfield;appearance:textfield}
+.field-help{display:block;margin:5px 0 0;color:#d6d9cd;text-align:center;font-size:12px}
+.spam-trap{position:absolute!important;right:0!important;top:0!important;width:1px!important;height:1px!important;opacity:0!important;clip-path:inset(50%)!important;overflow:hidden!important;pointer-events:none!important}
+.form-message{padding:11px 13px;margin:14px 0;line-height:1.5;font-size:14px;text-align:center}
+.form-error{background:#65372f;color:#fff2ec;border:1px solid #d1a49b}
+.submit-button{
+  display:flex;align-items:center;justify-content:center;gap:18px;width:min(100%,310px);
+  min-height:54px;margin:19px auto 0;padding:8px 20px;
+  border:1px solid #dfc999;background:#ddc598;color:#1d3d35;font-size:20px;font-weight:800;
+  box-shadow:0 8px 20px rgba(0,0,0,.11);transition:background .2s,transform .2s;
+}
+.submit-button:hover{background:#f0dab2;transform:translateY(-1px)}
+.submit-button span:last-child{font-size:22px}
+.privacy-note{text-align:center;margin:14px 0 0;color:#d2d9ca;font-size:12px;line-height:1.5}
+.success-panel{text-align:center;color:#fff8ea;padding:10px 0}
+.success-panel h3{font-family:'Frank Ruhl Libre',serif;font-size:35px;margin:7px 0;color:#fff8ea}
+.success-panel p{font-size:18px;line-height:1.5}
+.success-tick{display:grid;place-items:center;border-radius:50%;border:1px solid #e9d0a5;color:#e9d0a5;width:60px;height:60px;font-size:32px;margin:auto}
+.invite-footer{display:flex;align-items:center;justify-content:center;gap:14px;margin:33px auto 0;color:#9b8156;font-family:'Frank Ruhl Libre',serif;font-size:19px;text-align:center}
+.invite-footer p{margin:0}
+.floating-rsvp{
+  position:fixed;z-index:80;left:50%;bottom:max(13px,env(safe-area-inset-bottom));
+  transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;gap:11px;
+  padding:9px 17px;background:rgba(252,249,239,.96);color:#29453a;
+  border:1px solid #a98d58;box-shadow:0 10px 28px rgba(0,0,0,.22);
+  font-weight:800;font-size:14px;text-decoration:none;white-space:nowrap;backdrop-filter:blur(10px);
+  animation:float-indicator 1.8s ease-in-out infinite;
+  transition:opacity .24s ease,visibility .24s ease;
+}
+.floating-arrow{font-size:25px;line-height:.75;color:#927146}
+.floating-rsvp.is-hidden{opacity:0;visibility:hidden;pointer-events:none;animation:none}
+@keyframes float-indicator{0%,100%{margin-bottom:0}50%{margin-bottom:6px}}
+.thanks-overlay{position:fixed;z-index:1000;inset:0;display:grid;place-items:center;padding:16px;background:rgba(12,35,29,.74);backdrop-filter:blur(5px)}
+body.thanks-open{overflow:hidden}
+.thanks-dialog{width:min(100%,475px);max-height:calc(100dvh - 32px);overflow-y:auto;background:#faf8f0;border:1px solid #b99e6d;outline:7px solid rgba(250,248,240,.14);box-shadow:0 30px 80px rgba(0,0,0,.35);padding:32px 26px;text-align:center;color:#22443b}
+.thanks-sparkles{color:#b79b67;letter-spacing:5px;font-size:19px}
+.thanks-seal{width:70px;height:70px;margin:17px auto;display:grid;place-items:center;color:#ad925c;border:2px solid #ad925c;border-radius:50%;font-size:35px}
+.thanks-dialog h2{font-family:'Frank Ruhl Libre',serif;font-size:clamp(28px,7vw,39px);margin:5px 0 15px}
+.thanks-dialog p{font-size:17px;line-height:1.6}
+.thanks-summary{font-weight:800;padding:9px;border:1px solid #daccb2}
+.thanks-greeting{font-family:'Frank Ruhl Libre',serif;font-size:22px!important}
+.close-thanks{background:#24473e;border:1px solid #b99e6d;color:#fff6e8;min-height:49px;width:min(100%,260px);font-weight:800;font-size:17px}
+@media(max-width:800px){
+  .intro-layout{grid-template-columns:minmax(0,1fr);gap:20px}
+  .intro-text{order:0}.hero-photo{order:1;width:min(90%,355px)}
+  .hero-photo-frame{aspect-ratio:7/8}
+  .invitation-header{margin-bottom:24px}
+  .section-transition{margin-top:30px}
+}
+@media(max-width:480px){
+  body.invitation-page{padding:7px 6px 12px}
+  .invitation-paper:before{inset:7px}
+  .invitation-inner{padding:42px 20px 22px}
+  .ornament-corner{width:23px;height:23px}
+  .corner-tr{top:12px;right:12px}.corner-tl{top:12px;left:12px}
+  .corner-br{bottom:12px;right:12px}.corner-bl{bottom:12px;left:12px}
+  .bsd{top:-25px;right:0;font-size:13px}
+  .header-blessing{font-size:20px}
+  .divider-motif{margin:11px auto}
+  .invite-preface{font-size:25px}
+  .invitation-overline{font-size:13px;margin:0 0 9px}
+  .event-title{font-size:clamp(39px,11vw,53px);line-height:1.15}
+  .event-subtitle{font-size:clamp(28px,8vw,38px)}
+  .welcome-copy{font-size:21px}
+  .tiny-motif{margin:12px auto}
+  .hero-photo{width:min(95%,320px);padding:10px}
+  .hero-photo-frame{aspect-ratio:7/8}
+  .hero-photo figcaption{font-size:17px;margin-top:9px}
+  .details-duo{padding:15px 0;gap:0}
+  .detail-block{padding:5px 7px}
+  .detail-label{font-size:13px}
+  .detail-value{font-size:clamp(19px,5.4vw,26px)}
+  .time-value{font-size:clamp(27px,8vw,37px)}
+  .section-heading{font-size:32px;margin-bottom:17px}
+  .venue-block{padding-top:17px}
+  .venue-name{font-size:clamp(25px,7.2vw,36px)}
+  .navigation-link{font-size:13px;padding:10px 9px;gap:5px}
+  .rsvp-section{padding:31px 19px 25px}
+  .rsvp-heading-wrap h2{font-size:38px}
+  .rsvp-heading-wrap>p:last-child{font-size:15px}
+  .form-fields{grid-template-columns:minmax(0,1fr);gap:13px}
+  .field:nth-child(3){grid-column:1;width:100%;margin:0 auto}
+  .field input{font-size:16px;height:50px}
+  .floating-rsvp{bottom:max(10px,env(safe-area-inset-bottom));font-size:13px;padding:8px 14px}
+  .invite-footer{font-size:17px;margin:23px auto 0}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.floating-rsvp{animation:none}.submit-button,.navigation-link{transition:none}}

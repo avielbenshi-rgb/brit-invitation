@@ -1,128 +1,174 @@
 import { db, isConfigured, humanizeFirebaseError } from "./firebase.js";
-import { addDoc, collection, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
 
-const byId = (id) => document.getElementById(id);
-const form = byId("rsvpForm");
-const errorBox = byId("formError");
-const submitButton = byId("submitRsvp");
-const numberInput = byId("guests");
+const el = (id) => document.getElementById(id);
+const form = el("rsvpForm");
+const submitButton = el("submitRsvp");
+const guestCount = el("guests");
 let submitting = false;
-let dialogOpener = null;
-function closeThanks() {
-  byId("thanksOverlay").hidden = true;
-  document.body.classList.remove("thanks-open");
-  dialogOpener?.focus();
-}
-byId("thanksCloseButton").addEventListener("click", closeThanks);
-byId("thanksOverlay").addEventListener("click", event => {
-  if (event.target === byId("thanksOverlay")) closeThanks();
-});
-byId("thanksOverlay").addEventListener("keydown", event => {
-  if (event.key === "Escape") { closeThanks(); return; }
-  if (event.key === "Tab") { event.preventDefault(); byId("thanksCloseButton").focus(); }
-});
+let modalRestoreFocus = null;
 
-function safeTrim(value) {
-  return value.trim().replace(/\s+/g, " ");
+function normalizeTime(value) {
+  // The admin's <input type="time"> stores HH:mm; also accept a single-digit hour.
+  if (typeof value !== "string") return "";
+  const match = value.trim().match(/^(\d{1,2}):([0-5]\d)(?::[0-5]\d)?$/);
+  if (!match || Number(match[1]) > 23) return "";
+  return `${match[1].padStart(2, "0")}:${match[2]}`;
 }
-function formatEventDate(dateString) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return "התאריך יעודכן בקרוב";
-  const date = new Date(dateString + "T12:00:00");
-  if (Number.isNaN(date.getTime()) || [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0"), String(date.getDate()).padStart(2, "0")].join("-") !== dateString) return "התאריך יעודכן בקרוב";
-  return new Intl.DateTimeFormat("he-IL", { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(date);
+
+function formatDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return "התאריך יעודכן בקרוב";
+  }
+  const date = new Date(`${value}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return "התאריך יעודכן בקרוב";
+  // Prevent overflow dates such as 2026-02-31 from displaying as March.
+  const sameDate = date.getFullYear() === Number(value.slice(0, 4)) &&
+    date.getMonth() + 1 === Number(value.slice(5, 7)) &&
+    date.getDate() === Number(value.slice(8, 10));
+  if (!sameDate) return "התאריך יעודכן בקרוב";
+  return new Intl.DateTimeFormat("he-IL", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric",
+    timeZone: "Asia/Jerusalem"
+  }).format(date);
 }
+
 function safeNavigationUrl(value) {
   if (typeof value !== "string" || !value.trim()) return "";
   try {
     const url = new URL(value.trim());
-    if (url.protocol !== "https:" && url.protocol !== "http:") return "";
+    if (url.protocol !== "https:") return "";
     const host = url.hostname.toLowerCase();
-    const allowed = ["waze.com", "www.waze.com", "maps.google.com", "google.com", "www.google.com", "goo.gl", "maps.app.goo.gl"];
-    return allowed.some(domain => host === domain || host.endsWith("." + domain)) ? url.href : "";
+    const domains = ["waze.com", "google.com", "goo.gl"];
+    if (!domains.some((domain) => host === domain || host.endsWith(`.${domain}`))) return "";
+    return url.href;
   } catch { return ""; }
 }
-function displayError(message) {
-  errorBox.textContent = message;
-  errorBox.hidden = false;
+
+function renderEvent(settings) {
+  if (!settings || typeof settings !== "object") return;
+  if (typeof settings.title === "string" && settings.title.trim()) {
+    el("eventTitle").textContent = settings.title.trim();
+    document.title = `${settings.title.trim()} | אישור הגעה`;
+  }
+  if (typeof settings.subtitle === "string" && settings.subtitle.trim()) {
+    el("eventSubtitle").textContent = settings.subtitle.trim();
+  }
+  el("eventDate").textContent = formatDate(settings.date);
+  // Show the actual saved admin time. 07:30 remains the default if unset/invalid.
+  el("eventTime").textContent = normalizeTime(settings.time) || "07:30";
+  el("eventVenue").textContent = settings.venue || "המקום יעודכן בקרוב";
+  const address = typeof settings.address === "string" ? settings.address.trim() : "";
+  el("eventAddress").textContent = address;
+  el("eventAddress").hidden = !address;
+  const navigationUrl = safeNavigationUrl(settings.mapUrl);
+  const navigationLink = el("eventMapLink");
+  if (navigationUrl) navigationLink.href = navigationUrl;
+  navigationLink.hidden = !navigationUrl;
 }
-async function loadEvent() {
-  if (!isConfigured) {
-    byId("configAlert").hidden = false;
+
+function showConnectionError(message) {
+  const error = el("configAlert");
+  error.textContent = message;
+  error.hidden = false;
+}
+
+function loadEvent() {
+  if (!isConfigured || !db) {
+    showConnectionError("ההזמנה עדיין לא חוברה ל־Firebase. יש לפנות למארגנים.");
     submitButton.disabled = true;
     return;
   }
-  try {
-    const snapshot = await getDoc(doc(db, "settings", "event"));
-    if (!snapshot.exists()) return;
-    const event = snapshot.data();
-    if (event.title) byId("eventTitle").textContent = event.title;
-    if (event.subtitle) byId("eventSubtitle").textContent = event.subtitle;
-    byId("eventDate").textContent = event.date ? formatEventDate(event.date) : "התאריך יעודכן בקרוב";
-    byId("eventTime").textContent = /^\d{2}:\d{2}$/.test(event.time || "") ? event.time : "השעה תעודכן בקרוב";
-    byId("eventVenue").textContent = event.venue || "המקום יעודכן בקרוב";
-    byId("eventAddress").textContent = event.address || "";
-    byId("eventAddress").hidden = !event.address;
-    const mapLink = byId("eventMapLink");
-    const safeMapUrl = safeNavigationUrl(event.mapUrl);
-    mapLink.hidden = !safeMapUrl;
-    if (safeMapUrl) mapLink.href = safeMapUrl;
-    document.title = `${event.title || "הזמנה לברית מילה"} | אישור הגעה`;
-  } catch (error) {
-    byId("configAlert").textContent = "לא הצלחנו לטעון את פרטי האירוע. ודאו שהגדרות Firebase והרשאות הקריאה תקינות.";
-    byId("configAlert").hidden = false;
-    // Submissions may still work if only the settings read failed.
-    console.error("Could not load event:", error);
+  // Live subscription ensures admin changes appear without stale cached displays.
+  onSnapshot(doc(db, "settings", "event"), (snapshot) => {
+    if (snapshot.exists()) {
+      renderEvent(snapshot.data());
+      el("configAlert").hidden = true;
+    }
+  }, (error) => {
+    console.error("Cannot read event settings:", error);
+    showConnectionError("לא הצלחנו לטעון את פרטי האירוע. נא לבדוק את הרשאות הקריאה של Firestore או לפנות למארגנים.");
+  });
+}
+
+function adjustGuests(delta) {
+  const current = Number.parseInt(guestCount.value, 10);
+  guestCount.value = String(Math.max(1, Math.min(20, (Number.isInteger(current) ? current : 1) + delta)));
+}
+el("minusGuests").addEventListener("click", () => adjustGuests(-1));
+el("plusGuests").addEventListener("click", () => adjustGuests(1));
+
+function showFormError(message) {
+  el("formError").textContent = message;
+  el("formError").hidden = false;
+}
+
+function closeThanks() {
+  el("thanksOverlay").hidden = true;
+  document.body.classList.remove("thanks-open");
+  const focusTarget = modalRestoreFocus;
+  modalRestoreFocus = null;
+  if (focusTarget?.isConnected && !focusTarget.disabled && !focusTarget.closest("[hidden]")) {
+    focusTarget.focus();
+  } else {
+    el("successPanel").setAttribute("tabindex", "-1");
+    el("successPanel").focus();
   }
 }
-function adjustGuests(change) {
-  const current = Number.parseInt(numberInput.value, 10);
-  numberInput.value = String(Math.max(1, Math.min(20, (Number.isFinite(current) ? current : 1) + change)));
-}
-byId("minusGuests").addEventListener("click", () => adjustGuests(-1));
-byId("plusGuests").addEventListener("click", () => adjustGuests(1));
+el("thanksCloseButton").addEventListener("click", closeThanks);
+el("thanksOverlay").addEventListener("click", (event) => {
+  if (event.target === el("thanksOverlay")) closeThanks();
+});
+el("thanksOverlay").addEventListener("keydown", (event) => {
+  if (event.key === "Escape") { event.preventDefault(); closeThanks(); }
+  if (event.key === "Tab") { event.preventDefault(); el("thanksCloseButton").focus(); }
+});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (submitting || !db) return;
-  errorBox.hidden = true;
-  const firstName = safeTrim(byId("firstName").value);
-  const lastName = safeTrim(byId("lastName").value);
-  const guests = Number(numberInput.value);
+  el("formError").hidden = true;
+
+  const firstName = el("firstName").value.trim().replace(/\s+/g, " ");
+  const lastName = el("lastName").value.trim().replace(/\s+/g, " ");
+  const guests = Number(guestCount.value);
   if (firstName.length < 2 || firstName.length > 40 || lastName.length < 2 || lastName.length > 40) {
-    displayError("יש להזין שם פרטי ושם משפחה, לפחות 2 תווים בכל שדה.");
+    showFormError("נא למלא שם פרטי ושם משפחה, 2–40 תווים בכל שדה.");
     return;
   }
   if (!Number.isInteger(guests) || guests < 1 || guests > 20) {
-    displayError("יש לבחור מספר אנשים בין 1 ל־20.");
+    showFormError("נא לבחור מספר אורחים שלם בין 1 ל־20.");
     return;
   }
-  if (byId("website").value.trim()) return; // Spam honeypot; does not replace App Check.
+  if (el("website").value.trim()) return;
 
   submitting = true;
   submitButton.disabled = true;
-  submitButton.querySelector(".button-text").textContent = "שולחים את האישור...";
+  submitButton.querySelector(".button-text").textContent = "שולחים אישור...";
+
   try {
     await addDoc(collection(db, "rsvps"), {
-      firstName,
-      lastName,
-      guests,
-      createdAt: serverTimestamp()
+      firstName, lastName, guests, createdAt: serverTimestamp()
     });
-    try { localStorage.setItem("brit-rsvp-sent", "yes"); } catch { /* Browser privacy settings */ }
-    byId("successName").textContent = `${firstName} ${lastName}`;
-    byId("successCount").textContent = `נרשמו ${guests} ${guests === 1 ? "מגיע" : "מגיעים"}.`;
+    el("successName").textContent = `${firstName} ${lastName}`;
+    el("successCount").textContent = `נרשמו ${guests} ${guests === 1 ? "מגיע" : "מגיעים"}.`;
+    el("thanksSummary").textContent = `${firstName} ${lastName} · ${guests} ${guests === 1 ? "מגיע" : "מגיעים"}`;
+    // No device-based previous-submission notice or persisted flag is used.
     form.hidden = true;
-    byId("previousNotice").hidden = true;
-    byId("successPanel").hidden = false;
-    // Only open after Firestore acknowledges the write. Never imply success on errors.
-    dialogOpener = submitButton;
-    byId("thanksSummary").textContent = `${firstName} ${lastName} · ${guests} ${guests === 1 ? "מגיע" : "מגיעים"}`;
-    byId("thanksOverlay").hidden = false;
+    el("successPanel").hidden = false;
+    modalRestoreFocus = submitButton;
+    el("thanksOverlay").hidden = false;
     document.body.classList.add("thanks-open");
-    byId("thanksCloseButton").focus();
+    el("thanksCloseButton").focus();
   } catch (error) {
-    console.error("RSVP submission failed:", error);
-    displayError(humanizeFirebaseError(error));
+    console.error("RSVP save failed:", error);
+    showFormError(humanizeFirebaseError(error));
   } finally {
     submitting = false;
     submitButton.disabled = false;
@@ -130,28 +176,26 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-try { byId("previousNotice").hidden = localStorage.getItem("brit-rsvp-sent") !== "yes"; } catch { /* Browser privacy settings */ }
-loadEvent();
-
-
-// Floating RSVP prompt: gently bobs until the RSVP card is visible, then disappears.
-const scrollCue = byId("scrollToRsvp");
-const rsvpSection = byId("rsvpSection");
-if (scrollCue && rsvpSection && "IntersectionObserver" in window) {
-  const cueObserver = new IntersectionObserver(entries => {
-    const visible = entries.some(entry => entry.isIntersecting && entry.intersectionRatio >= 0.18);
-    scrollCue.classList.toggle("is-hidden", visible);
-    scrollCue.setAttribute("aria-hidden", visible ? "true" : "false");
-    if (visible) scrollCue.setAttribute("tabindex", "-1");
-    else scrollCue.removeAttribute("tabindex");
-  }, { threshold: [0, 0.18, 0.35] });
-  cueObserver.observe(rsvpSection);
-} else if (scrollCue && rsvpSection) {
+const cue = el("scrollToRsvp");
+const section = el("rsvpSection");
+function setCueVisibility(visible) {
+  cue.classList.toggle("is-hidden", visible);
+  cue.setAttribute("aria-hidden", String(visible));
+  cue.tabIndex = visible ? -1 : 0;
+}
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver((entries) => {
+    const item = entries[0];
+    setCueVisibility(item.isIntersecting && item.intersectionRect.height >= 20);
+  }, { threshold: [0, 0.05, 0.25] });
+  observer.observe(section);
+} else {
   const updateCue = () => {
-    const rect = rsvpSection.getBoundingClientRect();
-    const visible = rect.top < window.innerHeight * 0.82 && rect.bottom > window.innerHeight * 0.18;
-    scrollCue.classList.toggle("is-hidden", visible);
+    const rect = section.getBoundingClientRect();
+    setCueVisibility(rect.top < window.innerHeight - 20 && rect.bottom > 20);
   };
   window.addEventListener("scroll", updateCue, { passive: true });
   updateCue();
 }
+
+loadEvent();

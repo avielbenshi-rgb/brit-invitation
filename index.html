@@ -2,128 +2,139 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4efe6">
-  <meta name="description" content="הזמנה יוקרתית לברית מילה עם אישור הגעה אונליין">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#172c29">
+  <meta name="description" content="הזמנה לברית מילה — פרטי השמחה ואישור הגעה">
   <title>בשם ה׳ נעשה ונצליח | הזמנה לברית מילה</title>
   <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/styles.css">
-  <script type="module" src="./assets/guest.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&family=Frank+Ruhl+Libre:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- עיצוב חדש ומבודד מדף הניהול: לא טוענים styles.css הישן כדי למנוע התנגשויות. -->
+  <link rel="stylesheet" href="./assets/invitation.css?v=20261115-2">
+  <script type="module" src="./assets/guest.js?v=20261115-2"></script>
 </head>
-<body class="guest-page luxury-guest-page">
-  <div class="guest-shell luxury-shell">
-    <div class="bsd-badge">בס״ד</div>
+<body class="invitation-page">
+  <div class="ambient-stars" aria-hidden="true">✧</div>
+  <main class="invitation-paper" id="top">
+    <div class="ornament-corner corner-tr" aria-hidden="true"></div>
+    <div class="ornament-corner corner-tl" aria-hidden="true"></div>
+    <div class="ornament-corner corner-br" aria-hidden="true"></div>
+    <div class="ornament-corner corner-bl" aria-hidden="true"></div>
 
-    <header class="luxury-header" aria-label="כותרת ההזמנה">
-      <span class="luxury-line" aria-hidden="true"></span>
-      <div class="luxury-plaque">
-        <span class="luxury-crown" aria-hidden="true">♕</span>
-        <span>בשם ה׳ נעשה ונצליח</span>
-      </div>
-      <span class="luxury-line" aria-hidden="true"></span>
-    </header>
+    <div class="invitation-inner">
+      <header class="invitation-header">
+        <span class="bsd">בס״ד</span>
+        <p class="header-blessing">בשם ה׳ נעשה ונצליח</p>
+        <div class="divider-motif" aria-hidden="true"><span></span><i>✦</i><span></span></div>
+      </header>
 
-    <main class="luxury-layout">
-      <section class="luxury-visual-panel" aria-label="תמונת אווירה">
-        <img class="luxury-visual" src="./assets/ceremony-hero.webp" alt="תמונה מעוצבת של ברית מילה עם טלית, גביע כסף, סידור ותינוקות" loading="eager">
-      </section>
-
-      <section class="luxury-content" aria-labelledby="eventTitle">
-        <p class="luxury-overline">הננו שמחים להזמינכם</p>
-        <h1 id="eventTitle" class="luxury-title">לברית מילה</h1>
-        <p id="eventSubtitle" class="luxury-subtitle">של בננו היקר</p>
-        <p class="luxury-description">נשמח מאוד לראותכם ולשתף אתכם<br>בשמחתנו ביום המיוחד הזה</p>
-        <div class="luxury-divider" aria-hidden="true">✦</div>
-
-        <section class="luxury-details" aria-label="פרטי האירוע">
-          <article class="luxury-detail-card">
-            <div class="luxury-detail-icon" aria-hidden="true">📍</div>
-            <span class="luxury-detail-label">מקום</span>
-            <strong id="eventVenue">המקום יעודכן בקרוב</strong>
-            <span id="eventAddress" class="luxury-detail-text" hidden></span>
-            <a id="eventMapLink" class="map-link" href="#" target="_blank" rel="noopener noreferrer" hidden><span aria-hidden="true">↗</span> ניווט למקום ב־Waze / Google Maps</a>
-          </article>
-          <article class="luxury-detail-card">
-            <div class="luxury-detail-icon" aria-hidden="true">🕘</div>
-            <span class="luxury-detail-label">שעה</span>
-            <strong id="eventTime">השעה תעודכן בקרוב</strong>
-            <span class="luxury-detail-text">סדר הברית</span>
-          </article>
-          <article class="luxury-detail-card">
-            <div class="luxury-detail-icon" aria-hidden="true">🗓️</div>
-            <span class="luxury-detail-label">תאריך</span>
-            <strong id="eventDate">התאריך יעודכן בקרוב</strong>
-            <span class="luxury-detail-text">נשמח לראותכם</span>
-          </article>
-        </section>
-
-        <section id="rsvpSection" class="luxury-rsvp-card" aria-label="אישור הגעה">
-          <div class="luxury-card-mark" aria-hidden="true">✦</div>
-          <h2>נשמח לארח אתכם בשמחתנו</h2>
-          <p class="luxury-card-subtitle">נא אשרו את השתתפותכם כדי שנוכל להיערך בהתאם</p>
-
-          <div id="configAlert" class="form-message message-error" role="alert" hidden>האתר עדיין לא חובר ל־Firebase. יש להשלים את ההגדרות בקובץ firebase-config.js.</div>
-          <div id="previousNotice" class="form-message message-info" hidden>כבר נשלח אישור הגעה מהמכשיר הזה. אם אתם מעדכנים שוב, ודאו שלא נוצרת כפילות.</div>
-
-          <form id="rsvpForm" class="luxury-form" novalidate>
-            <div class="field-row three-cols">
-              <div class="field luxury-field">
-                <label for="firstName">שם פרטי <span aria-hidden="true">*</span></label>
-                <input id="firstName" name="firstName" type="text" autocomplete="given-name" required minlength="2" maxlength="40" placeholder="הכניסו שם פרטי" enterkeyhint="next">
-              </div>
-              <div class="field luxury-field">
-                <label for="lastName">שם משפחה <span aria-hidden="true">*</span></label>
-                <input id="lastName" name="lastName" type="text" autocomplete="family-name" required minlength="2" maxlength="40" placeholder="הכניסו שם משפחה" enterkeyhint="next">
-              </div>
-              <div class="field luxury-field guests-field">
-                <label for="guests">מספר אורחים <span aria-hidden="true">*</span></label>
-                <div class="number-field luxury-number-field">
-                  <button id="minusGuests" type="button" aria-label="הפחת אדם אחד">−</button>
-                  <input id="guests" name="guests" type="number" inputmode="numeric" min="1" max="20" step="1" value="1" required aria-describedby="guestsHelp">
-                  <button id="plusGuests" type="button" aria-label="הוסף אדם אחד">+</button>
-                </div>
-                <p id="guestsHelp" class="field-hint">עד 20 אנשים באישור אחד</p>
-              </div>
-            </div>
-            <div class="honeypot" aria-hidden="true">
-              <label for="website">אתר אישי</label>
-              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-            </div>
-            <p id="formError" class="form-message message-error" role="alert" hidden></p>
-            <button id="submitRsvp" class="primary-button luxury-submit" type="submit">
-              <span class="button-text">אישור הגעה</span>
-              <span class="button-arrow" aria-hidden="true">←</span>
-            </button>
-            <p class="privacy-note">הפרטים נשמרים לצורך תכנון האירוע בלבד ונגישים למארגנים.</p>
-          </form>
-
-          <div id="successPanel" class="success-panel" role="status" aria-live="polite" hidden>
-            <div class="success-check" aria-hidden="true">✓</div>
-            <h3>תודה רבה!</h3>
-            <p><strong id="successName"></strong>, אישור ההגעה שלכם נקלט בהצלחה.</p>
-            <p id="successCount"></p>
-            <p class="success-small">נשמח לראותכם בשמחתנו ♡</p>
+      <section class="intro-layout" aria-labelledby="eventTitle">
+        <div class="intro-text">
+          <p class="invitation-overline">בהודיה לבורא עולם</p>
+          <p class="invite-preface">הננו מתכבדים להזמינכם</p>
+          <h1 id="eventTitle" class="event-title">לברית המילה</h1>
+          <p id="eventSubtitle" class="event-subtitle">של בננו היקר</p>
+          <div class="tiny-motif" aria-hidden="true">✧ ✦ ✧</div>
+          <p class="welcome-copy">נשמח לארח אתכם בשמחתנו<br>ולחלוק יחד את הרגע המרגש</p>
+        </div>
+        <figure class="hero-photo">
+          <div class="hero-photo-frame">
+            <img src="./assets/ceremony-hero.webp" alt="טלית חגיגית, גביע כסף וסידור לברית המילה" width="620" height="810" loading="eager">
           </div>
-        </section>
+          <figcaption>בשמחה ובאהבה</figcaption>
+        </figure>
       </section>
-    </main>
-  </div>
 
-  <a id="scrollToRsvp" class="scroll-cue" href="#rsvpSection" aria-label="גללו למטה לאישור הגעה"><span class="scroll-cue-text">לאישור הגעה</span><span class="scroll-cue-arrow" aria-hidden="true">⌄</span></a>
+      <div class="section-transition" aria-hidden="true"><span></span><b>✦</b><span></span></div>
+
+      <section class="event-details" aria-labelledby="detailsHeading">
+        <p class="eyebrow">פרטי השמחה</p>
+        <h2 id="detailsHeading" class="section-heading">נפגש בשמחה</h2>
+
+        <div class="details-duo">
+          <div class="detail-block">
+            <p class="detail-label">יום ותאריך</p>
+            <p id="eventDate" class="detail-value">התאריך יעודכן בקרוב</p>
+          </div>
+          <div class="detail-block">
+            <p class="detail-label">שעת התחלה</p>
+            <p id="eventTime" class="detail-value time-value" dir="ltr">07:30</p>
+          </div>
+        </div>
+
+        <div class="venue-block">
+          <div class="venue-ornament" aria-hidden="true">⌖</div>
+          <p class="detail-label">מקום האירוע</p>
+          <p id="eventVenue" class="venue-name">המקום יעודכן בקרוב</p>
+          <p id="eventAddress" class="venue-address" hidden></p>
+          <a id="eventMapLink" class="navigation-link" href="#" target="_blank" rel="noopener noreferrer" hidden>
+            <span class="navigation-icon" aria-hidden="true">↗</span><span>ניווט באמצעות Waze / Google Maps</span>
+          </a>
+        </div>
+      </section>
+
+      <div class="section-transition before-rsvp" aria-hidden="true"><span></span><b>✦</b><span></span></div>
+
+      <section class="rsvp-section" id="rsvpSection" aria-labelledby="rsvpHeading">
+        <div class="rsvp-heading-wrap">
+          <p class="eyebrow">נשמח לראותכם</p>
+          <h2 id="rsvpHeading">אישור הגעה</h2>
+          <p>נודה לכם על אישור ההשתתפות כדי שנוכל להיערך בהתאם.</p>
+        </div>
+
+        <div id="configAlert" class="form-message form-error" role="alert" hidden>אירעה בעיה בחיבור לאתר. נא לפנות למארגנים.</div>
+
+        <form id="rsvpForm" class="rsvp-form" novalidate>
+          <div class="form-fields">
+            <div class="field">
+              <label for="firstName">שם פרטי <span aria-hidden="true">*</span></label>
+              <input id="firstName" name="firstName" type="text" autocomplete="given-name" minlength="2" maxlength="40" placeholder="השם הפרטי שלכם" required>
+            </div>
+            <div class="field">
+              <label for="lastName">שם משפחה <span aria-hidden="true">*</span></label>
+              <input id="lastName" name="lastName" type="text" autocomplete="family-name" minlength="2" maxlength="40" placeholder="שם המשפחה שלכם" required>
+            </div>
+            <div class="field">
+              <label for="guests">מספר אורחים <span aria-hidden="true">*</span></label>
+              <div class="guests-stepper">
+                <button type="button" id="minusGuests" aria-label="הפחת אורח">−</button>
+                <input id="guests" name="guests" type="number" min="1" max="20" inputmode="numeric" value="1" aria-describedby="guestsHelp" required>
+                <button type="button" id="plusGuests" aria-label="הוסף אורח">+</button>
+              </div>
+              <span id="guestsHelp" class="field-help">עד 20 אורחים באישור אחד</span>
+            </div>
+          </div>
+          <div class="spam-trap" aria-hidden="true"><label for="website">אתר אישי</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+          <p id="formError" class="form-message form-error" role="alert" hidden></p>
+          <button id="submitRsvp" type="submit" class="submit-button"><span class="button-text">אישור הגעה</span><span aria-hidden="true">↗</span></button>
+          <p class="privacy-note">הפרטים משמשים את המארגנים לצורך היערכות לאירוע בלבד.</p>
+        </form>
+
+        <div id="successPanel" class="success-panel" role="status" aria-live="polite" hidden>
+          <span class="success-tick" aria-hidden="true">✓</span>
+          <h3>תודה רבה!</h3>
+          <p><strong id="successName"></strong>, האישור שלכם התקבל בהצלחה.</p>
+          <p id="successCount"></p>
+          <p>נתראה בשמחות ♡</p>
+        </div>
+      </section>
+
+      <footer class="invite-footer"><span aria-hidden="true">✧</span><p>בשורות טובות ושמחות תמיד</p><span aria-hidden="true">✧</span></footer>
+    </div>
+  </main>
+
+  <a id="scrollToRsvp" class="floating-rsvp" href="#rsvpSection" aria-label="גללו לאישור הגעה"><span>לאישור הגעה</span><span class="floating-arrow" aria-hidden="true">⌄</span></a>
 
   <div id="thanksOverlay" class="thanks-overlay" hidden>
     <section class="thanks-dialog" role="dialog" aria-modal="true" aria-labelledby="thanksTitle" aria-describedby="thanksDescription" tabindex="-1">
       <div class="thanks-sparkles" aria-hidden="true">✦ ✧ ✦</div>
-      <div class="thanks-emblem" aria-hidden="true">✓</div>
-      <p class="eyebrow">בשמחה רבה</p>
+      <div class="thanks-seal" aria-hidden="true">✓</div>
       <h2 id="thanksTitle">תודה שאישרתם הגעה</h2>
-      <p id="thanksDescription">אישור ההגעה שלכם התקבל בהצלחה.<br>נשמח מאוד לראותכם ולחגוג איתכם את הרגע המיוחד שלנו.</p>
+      <p id="thanksDescription">אישור ההגעה שלכם התקבל בהצלחה.<br>נשמח לחגוג אתכם את הרגע המיוחד שלנו.</p>
       <p id="thanksSummary" class="thanks-summary"></p>
-      <p class="thanks-salutation">נתראה בשמחות ♡</p>
-      <button id="thanksCloseButton" class="primary-button" type="button">תודה, נתראה! <span aria-hidden="true">♡</span></button>
+      <p class="thanks-greeting">נתראה בשמחות ♡</p>
+      <button id="thanksCloseButton" class="close-thanks" type="button">תודה, נתראה!</button>
     </section>
   </div>
 </body>
