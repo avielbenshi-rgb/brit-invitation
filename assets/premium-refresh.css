@@ -1,0 +1,34 @@
+/* Premium refresh: evergreen, ivory and champagne */
+:root{--forest:#173d32;--forest-dark:#102e26;--gold:#b58a49;--ink:#1d3029}
+.luxury-guest-page{background:#eee9df;background-image:radial-gradient(ellipse at 50% -12%,#fffdf8 0,transparent 55%),linear-gradient(145deg,#f4f0e8,#e8e1d4)}
+.luxury-shell{max-width:1380px;padding:30px clamp(15px,4.5vw,72px) 56px}
+.luxury-header{margin:28px 0 36px;gap:24px}
+.luxury-plaque{background:#173d32;color:#f7eedc;border:1px solid #c4a36d;border-radius:5px;padding:13px 38px;min-height:76px;box-shadow:0 14px 38px #142d2329}
+.luxury-crown{color:#d8b779}.luxury-line{height:1px;background:linear-gradient(90deg,transparent,#b58a49 50%,transparent)}
+.luxury-layout{grid-template-columns:minmax(330px,.88fr) minmax(440px,1.12fr);gap:clamp(28px,4.5vw,68px);align-items:center}
+.luxury-visual-panel{padding:0 12px 12px 0}
+.luxury-visual-panel:before{content:"";position:absolute;inset:22px -12px -12px 24px;border:1px solid #b58a49;z-index:0;pointer-events:none}
+.luxury-visual-panel:after{inset:9px 0 auto 32px;height:calc(100% - 18px);border-radius:2px;border-color:#b58a498c}
+.luxury-visual{border-radius:3px;border:7px solid #fffaf1;outline:1px solid #c8ad7d;box-shadow:0 26px 65px #2a221533}
+.luxury-content{padding:16px 0}.luxury-overline{font-size:17px;letter-spacing:.2em;color:#92703c}
+.luxury-title{color:#173d32;text-shadow:none;font-size:clamp(52px,5.8vw,86px);letter-spacing:-.045em}
+.luxury-subtitle{color:#98713a;font-size:clamp(30px,3.2vw,48px)}.luxury-description{color:#58645b;line-height:1.8}
+.luxury-divider{color:#b58a49;margin:24px auto}.luxury-details{gap:13px;margin:24px 0 30px}
+.luxury-detail-card{position:relative;overflow:visible;background:linear-gradient(160deg,#fffdf8,#f5efe4);border:1px solid #c5a66e;border-radius:4px;padding:25px 16px 22px;box-shadow:0 13px 30px #352b190f;min-height:188px}
+.luxury-detail-card:after{content:"";position:absolute;inset:5px;border:1px solid #c5a66e47;pointer-events:none}
+.luxury-detail-icon{width:46px;height:46px;margin-top:-49px;border-radius:50%;background:#173d32;border:1px solid #c5a66e;color:#e9d4a7;box-shadow:0 7px 18px #173d3233;font-size:20px}
+.luxury-detail-label{font-size:15px;letter-spacing:.13em;color:#92703d;margin-top:13px}
+.luxury-detail-card strong{color:#173d32;font-size:clamp(23px,1.9vw,32px)}.luxury-detail-text{font-size:16px;color:#6b7068}
+.event-time-panels{gap:0;margin-top:9px;border:1px solid #d9c8a8;background:#fffdf8;padding:12px 9px;border-radius:3px;width:100%;position:relative;z-index:1}
+.event-time-panel{border:0;border-radius:0;background:transparent;box-shadow:none;padding:5px 8px}
+.event-time-heading{font-size:15px;color:#8b6b38}.event-time-panel strong{font-size:clamp(29px,2.4vw,36px);color:#173d32}
+.luxury-rsvp-card{background:linear-gradient(145deg,#fffdf8,#f3ecdf);border:1px solid #c5a66e;border-radius:5px;box-shadow:0 22px 60px #2823191f;padding:38px clamp(18px,3vw,34px) 30px}
+.luxury-card-mark{background:#173d32;color:#e6d1a6;border-color:#c5a66e}.luxury-rsvp-card h2{color:#173d32}.luxury-card-subtitle{color:#70766e}
+.luxury-field label{color:#665333}.luxury-field input,.luxury-number-field{background:#fffdf8;border-color:#d9c9ad;border-radius:4px}
+.luxury-number-field button{background:#f2eadb;color:#74592f}
+.luxury-submit{background:#173d32;border:1px solid #c5a66e;border-radius:4px;box-shadow:0 12px 25px #173d322e}.luxury-submit:hover{background:#245344}
+.map-link{border-radius:3px}.scroll-cue{border-radius:3px;background:#173d32;color:#f8efde;border-color:#c5a66e}.scroll-cue-arrow{color:#e2c48d}
+#previousNotice{display:none!important}
+@media(max-width:1120px){.luxury-layout{grid-template-columns:minmax(0,1fr);gap:28px}.luxury-visual-panel{max-width:700px;width:100%;margin:auto}.luxury-content{max-width:850px;width:100%;margin:auto}}
+@media(max-width:860px){.luxury-details{grid-template-columns:minmax(0,1fr);gap:25px}.luxury-detail-card{min-height:0;padding:22px 16px}.luxury-layout{gap:22px}}
+@media(max-width:600px){.luxury-shell{padding:52px 14px 38px}.luxury-header{margin:7px 0 24px;gap:8px}.luxury-plaque{font-size:clamp(17px,4.8vw,23px);min-height:58px;padding:9px 12px}.luxury-title{font-size:clamp(42px,13vw,59px)}.luxury-subtitle{font-size:clamp(27px,8vw,36px)}.luxury-description{font-size:17px}.luxury-visual-panel{padding:0 7px 7px 0}.luxury-visual-panel:before{inset:13px -7px -7px 14px}.luxury-details{margin:29px 0 24px;gap:25px}.luxury-detail-card{padding:21px 13px 18px}.event-time-panels{padding:9px 7px}.event-time-panel{padding:6px}.event-time-heading{font-size:14px}.event-time-panel strong{font-size:30px}.luxury-rsvp-card{border-radius:5px;padding:30px 15px 24px}.luxury-rsvp-card h2{font-size:clamp(25px,7.5vw,31px)}}
